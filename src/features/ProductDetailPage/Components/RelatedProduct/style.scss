@@ -1,0 +1,16 @@
+.relatedproduct {
+    .row {
+        // background: #ffffff;
+        padding-top: 15px;
+        @media (max-width: 767px) {
+            flex-wrap: nowrap;
+            overflow-y: auto;
+        }
+        scroll-snap-type: x mandatory;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}

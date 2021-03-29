@@ -1,0 +1,9 @@
+.container.--productspage {
+    max-width: 1100px;
+    padding-top: 30px;
+    margin-top: var(--hdheight);
+    .row.--productspage {
+        margin-right: -10px;
+        margin-left: -10px;
+    }
+}

@@ -1,0 +1,178 @@
+.product {
+    &__title {
+        padding: 20px 0;
+        position: relative;
+        border-bottom: 0.4px solid rgba(0, 0, 0, 0.4);
+        h2 {
+            font-size: 3em;
+            font-weight: 600;
+            font-family: "Poppins", sans-serif;
+            line-height: 33px;
+        }
+        p {
+            font-size: 1.5em;
+            font-weight: bolder;
+            margin-top: 5px;
+        }
+    }
+    // &__below {
+    // display: flex;
+    .row {
+        padding-bottom: 10px;
+        .image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @media (max-width: 767px) {
+                margin: 0 auto;
+            }
+            img {
+                width: 100%;
+            }
+        }
+        .textbox {
+            padding: 10px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            p {
+                font-size: 2.5em;
+                color: var(--orange-primary);
+                font-family: "Poppins", sans-serif;
+                &:first-child {
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                }
+            }
+            .description {
+                font-size: 1.6em;
+                font-family: "Poppins", sans-serif;
+                color: #000000;
+                margin-top: 5px;
+            }
+            .flavor {
+                margin-top: 20px;
+                font-size: 1.8em;
+                color: #000000;
+                font-weight: 500;
+                font-family: "Poppins", sans-serif;
+                .flavorlist {
+                    display: flex;
+                    margin-top: 15px;
+                    font-size: 1.3em;
+                    font-family: "Poppins", sans-serif;
+                    flex-wrap: wrap;
+                    li {
+                        cursor: pointer;
+                        margin-bottom: 8px;
+                        position: relative;
+                        font-size: 17px;
+                        &:after {
+                            content: "\2713";
+                            position: absolute;
+                            bottom: -3px;
+                            right: 1px;
+                            color: var(--orange-primary);
+                            display: none;
+                        }
+                        &.active {
+                            &:after {
+                                display: block;
+                            }
+                            label {
+                                border: 1px solid var(--orange-primary);
+                            }
+                        }
+                        label {
+                            cursor: pointer;
+                            padding: 6px 8px;
+                            border: 1px solid #e1e1e1;
+                            display: inline-block;
+                            font-size: 15px;
+                        }
+                        input {
+                            display: none;
+                        }
+                        &:not(:last-child) {
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+            .btn {
+                margin-top: 15px;
+                display: flex;
+                align-items: center;
+                button.btn__addtocart {
+                    padding: 7px 15px;
+                    background: var(--orange-primary);
+                    font-size: 1.7em;
+                    font-family: "Poppins", sans-serif;
+                    font-weight: 500;
+                    border: none;
+                    border-radius: 4px;
+                    color: #ffffff;
+                    cursor: pointer;
+                    transition: 0.4s;
+                    outline: none;
+                    -webkit-tap-highlight-color: transparent;
+                    & + button {
+                        margin-left: 10px;
+                        background: #fcd537;
+                        transition: 0.4s;
+                        color: #000000;
+                    }
+                    &.btn__addtocart:hover {
+                        background: #e14722;
+                        transition: 0.4s;
+                    }
+                    &.btn__buynow:hover {
+                        background: #e2bf31;
+                        transition: 0.4s;
+                    }
+                }
+                .quantityfield {
+                    border: 0.9px solid #acacac;
+                    border-radius: 5px;
+                    margin-right: 10px;
+                    height: 39px;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    .--btnctrl {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: initial;
+                        font-size: 2em;
+                        width: 30px;
+                        background: #acacac;
+                        border: none;
+                        outline: none;
+                        height: 100%;
+                        text-align: center;
+                        padding: 0;
+                        cursor: pointer;
+                        -webkit-tap-highlight-color: transparent;
+                    }
+                    input {
+                        height: 28px;
+                        width: 50px;
+                        font-size: 1.7em;
+                        text-align: center;
+                        border: none;
+                        outline: none;
+                        padding: 0;
+                        &::-webkit-outer-spin-button,
+                        &::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+        // }
+    }
+}

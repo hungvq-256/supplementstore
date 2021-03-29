@@ -1,0 +1,28 @@
+.loadmore {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    &:hover .loadmore__btn {
+        background: #e14722;
+        transition: 0.4s;
+    }
+    &__btn {
+        width: 100px;
+        height: 40px;
+        background: var(--orange-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: 0.4s;
+        p {
+            font-size: 14px;
+            font-family: "Poppins", sans-serif;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+    }
+}

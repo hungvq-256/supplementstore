@@ -1,0 +1,84 @@
+.container.--searchpage {
+    min-height: 280px;
+    margin-top: var(--hdheight);
+    padding-top: 20px;
+    .inputfield {
+        max-width: 400px;
+        margin: 0 auto;
+        height: 30px;
+        border: 1px solid #e1e1e1;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        input {
+            width: 100%;
+            height: 100%;
+            font-size: 1.8em;
+            border: none;
+            outline: none;
+            &::placeholder {
+                font-size: 15px;
+            }
+        }
+    }
+    .searchresult {
+        max-height: 350px;
+        max-width: 600px;
+        margin: 0 auto;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+        &::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #ffffff;
+        }
+        .productresult {
+            display: flex;
+            cursor: pointer;
+            &:not(:first-child) {
+                border-top: 1px solid #e1e1e1;
+            }
+            padding: 10px 0;
+            text-decoration: none;
+            color: #111111;
+            &__productimg {
+                width: 80px;
+                height: 80px;
+                margin-right: 10px;
+                div {
+                    width: 100%;
+                    padding-top: 100%;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    -webkit-tap-highlight-color: transparent;
+                }
+            }
+            &__textbox {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                h3 {
+                    font-size: 1.6em;
+                    font-family: "Poppins", sans-serif;
+                    font-weight: 600;
+                    &:hover {
+                        color: var(--orange-primary);
+                    }
+                }
+                p {
+                    font-size: 1.4em;
+                    font-family: "Poppins", sans-serif;
+                }
+                .price {
+                    font-size: 1.5em;
+                    font-family: "Poppins", sans-serif;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
