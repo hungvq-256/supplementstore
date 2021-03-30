@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from "firebase/app";
-import fire from "../../../../firebase";
+import fire from "../../../../fire";
 import "firebase/auth";
 import { useDispatch } from 'react-redux';
 import { googleSignup } from '../../../../actions/user';

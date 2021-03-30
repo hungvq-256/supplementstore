@@ -75,8 +75,8 @@ const Products = () => {
                     </div>
                 }
                 {buttonShow &&
-                    <div className="loadmore" onClick={handleLoadMorePosts}>
-                        <div className="loadmore__btn">
+                    <div className="loadmore">
+                        <div className="loadmore__btn" onClick={handleLoadMorePosts}>
                             {loadingBtn ? <CircularProgress size={25} style={{ color: "#ffffff" }} /> : <p>more</p>}
                         </div>
                     </div>

@@ -16,6 +16,9 @@ const Header = (props) => {
     const [header, setHeader] = useState(false);
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    // const [preValue, setPreValue] = useState(0);
+    // const [showNav, setShowNav] = useState(true);
+
     const user = useSelector(state => state.user.current);
     const isLogin = !!user.userId;
     const dispatch = useDispatch();
@@ -42,6 +45,8 @@ const Header = (props) => {
             setHeader(false);
         }
     };
+
+
     const handleOpenAccount = (e) => {
         setAnchorEl(e.currentTarget);
     };
@@ -62,6 +67,18 @@ const Header = (props) => {
         };
     }, []);
 
+    // useEffect(() => {
+    //     const handleDisplayNav = () => {
+    //         const currentValue = window.scrollY;
+    //         setShowNav(preValue > currentValue);
+    //         setPreValue(currentValue);
+    //     }
+    //     window.addEventListener('scroll', handleDisplayNav);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleDisplayNav);
+    //     };
+    // }, [preValue, showNav]);
+    // console.log(showNav);
     return (
         <>
             <header className={header || (pathname !== '/' && pathname !== '/contact' && pathname !== '/about')

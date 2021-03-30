@@ -67,6 +67,7 @@
 .col-xl-11,
 .col-xl-12,
 .col-xl,
+.col-xxs,
 .col-xl-auto {
   position: relative;
   width: 100%;
@@ -316,6 +317,15 @@
 
 .offset-11 {
   margin-left: 91.666667%;
+}
+
+@media (max-width: 375px) {
+  .col-xxs {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 @media (min-width: 576px) {

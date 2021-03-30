@@ -2,10 +2,6 @@
     display: flex;
     justify-content: center;
     margin-top: 30px;
-    &:hover .loadmore__btn {
-        background: #e14722;
-        transition: 0.4s;
-    }
     &__btn {
         width: 100px;
         height: 40px;
@@ -17,6 +13,11 @@
         border-radius: 50px;
         cursor: pointer;
         transition: 0.4s;
+        -webkit-tap-highlight-color: transparent;
+        &:hover {
+            background: #e14722;
+            transition: 0.4s;
+        }
         p {
             font-size: 14px;
             font-family: "Poppins", sans-serif;
