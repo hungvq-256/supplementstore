@@ -76,24 +76,14 @@ function ProductItem(props) {
         setShowQuickView(false);
     }
 
-    const convertString = (string) => {
-        let newString = '';
-        if (string.charAt(string.length - 1) === "?" || string.charAt(string.length - 1) === "!") {
-            newString = string.slice(0, string.length - 2);
-        } else {
-            newString = string
-        }
-        newString = newString.toLowerCase().split(' ').join('-');
-        return newString.toString();
-    }
     const products = listProduct.map((item) => (
         <div className={`col-${column} col-xxs col-sm-4 col-lg-3`} key={item.id}>
             <div className="productitem">
-                <Link to={`/products/${convertString(item.type)}/product-${item.id}`}>
+                <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`}>
                     <div className="productitem__img" style={{ backgroundImage: `url(${item.img})` }}></div>
                 </Link>
                 <div className="productitem__textbox">
-                    <Link to={`/products/${convertString(item.type)}/product-${item.id}`} title={item.title}>
+                    <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`} title={item.title}>
                         <h3>{item.title}</h3>
                     </Link>
                     <p>{`$${Number(item.price) % 1 !== 0 ? item.price : `${item.price}.00`}`}</p>
