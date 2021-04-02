@@ -1,3 +1,4 @@
+import VisibilitySharpIcon from '@material-ui/icons/VisibilitySharp';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -5,9 +6,8 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert2';
 import { withSwalInstance } from 'sweetalert2-react';
 import { addToCart } from '../../actions/cart';
-import VisibilitySharpIcon from '@material-ui/icons/VisibilitySharp';
-import './style.scss';
 import QuickView from './component/QuickView';
+import './style.scss';
 
 const SweetAlert = withSwalInstance(swal);
 
@@ -29,14 +29,15 @@ function ProductItem(props) {
     // const location = useLocation(); //get current url location.pathname
     const [statusPopup, setStatusPopup] = useState(false);
     const [showQuickView, setShowQuickView] = useState(false);
-    const [productQuickView, setProductQuickView] = useState({});
+    const [productPopup, setProductPopup] = useState({});
     const [alert, setAlert] = useState(false);
     const flavorRef = useRef();
+
     const handleAddToCart = (id) => {
         const productItem = listProduct.find(item => item.id === id);
         const action = addToCart(productItem);
         if (productItem.type !== 'vitamin' && productItem.type !== 'fat burner') {
-            setProductQuickView(productItem)
+            setProductPopup(productItem);
             setStatusPopup(true);
         } else {
             setAlert(true);
@@ -45,8 +46,8 @@ function ProductItem(props) {
     }
     const handleClosePopup = () => {
         setStatusPopup(false);
-
     }
+
     const handleActiveFlavor = (idx) => {
         let flavorList = flavorRef.current.children;
         for (let i = 0; i < flavorList.length; i++) {
@@ -57,29 +58,42 @@ function ProductItem(props) {
 
     const handleAddToCartPopup = () => {
         let newItem = {
-            ...productQuickView,
+            ...productPopup,
             flavorChoosed: flavorValue
         }
         let action = addToCart(newItem);
         dispatch(action);
         setAlert(true);
     }
+
     const handleDisplayQuickView = (id) => {
         const findProduct = listProduct.find(item => item.id === id);
-        setProductQuickView(findProduct);
+        setProductPopup(findProduct);
         setShowQuickView(true);
     }
+
     const handleCloseQuickView = () => {
         setShowQuickView(false);
+    }
+
+    const convertString = (string) => {
+        let newString = '';
+        if (string.charAt(string.length - 1) === "?" || string.charAt(string.length - 1) === "!") {
+            newString = string.slice(0, string.length - 2);
+        } else {
+            newString = string
+        }
+        newString = newString.toLowerCase().split(' ').join('-');
+        return newString.toString();
     }
     const products = listProduct.map((item) => (
         <div className={`col-${column} col-xxs col-sm-4 col-lg-3`} key={item.id}>
             <div className="productitem">
-                <Link to={`/products/product-${item.id}`}>
+                <Link to={`/products/${convertString(item.type)}/product-${item.id}`}>
                     <div className="productitem__img" style={{ backgroundImage: `url(${item.img})` }}></div>
                 </Link>
                 <div className="productitem__textbox">
-                    <Link to={`/products/product-${item.id}`} title={item.title}>
+                    <Link to={`/products/${convertString(item.type)}/product-${item.id}`} title={item.title}>
                         <h3>{item.title}</h3>
                     </Link>
                     <p>{`$${Number(item.price) % 1 !== 0 ? item.price : `${item.price}.00`}`}</p>
@@ -93,7 +107,8 @@ function ProductItem(props) {
                 {newTag ? <div className="newtag">NEW</div> : ''}
             </div>
         </div>
-    ))
+    ));
+
     useEffect(() => {
         if (statusPopup) {
             handleActiveFlavor(0);
@@ -102,12 +117,12 @@ function ProductItem(props) {
     return (
         <>
             {products}
-            {statusPopup === true &&
+            {statusPopup &&
                 <div className="productpopupwrap">
                     <div className="productpopup">
-                        <div className="productpopup__img" style={{ backgroundImage: `url(${productQuickView.img})` }}></div>
-                        <p className="productpopup__title">{productQuickView.title}</p>
-                        <p className="productpopup__price">Price: ${productQuickView.price}</p>
+                        <div className="productpopup__img" style={{ backgroundImage: `url(${productPopup.img})` }}></div>
+                        <p className="productpopup__title">{productPopup.title}</p>
+                        <p className="productpopup__price">Price: ${productPopup.price}</p>
                         <div className="flavor">
                             Flavor:
                             <ul ref={flavorRef} className="flavorlist">
@@ -140,7 +155,7 @@ function ProductItem(props) {
                     <div className="modal" onClick={handleClosePopup}></div>
                 </div>
             }
-            {showQuickView && <QuickView productInfo={productQuickView} onReceiveCloseQuickView={handleCloseQuickView} />}
+            {showQuickView && <QuickView productInfo={productPopup} onReceiveCloseQuickView={handleCloseQuickView} />}
             <SweetAlert
                 show={alert}
                 title="Successfully add to cart"

@@ -1,6 +1,5 @@
 .relatedproduct {
-    .row {
-        // background: #ffffff;
+    .row.--relatedproduct {
         padding-top: 15px;
         @media (max-width: 767px) {
             flex-wrap: nowrap;

@@ -131,8 +131,9 @@ function QuickView({ productInfo, onReceiveCloseQuickView }) {
                             </div>
                         </div>
                     </div>
+                    <div className="close" onClick={handleCloseQuickView}>&#10006;</div>
                 </div>
-                <div className="close" onClick={handleCloseQuickView}>&#10006;</div>
+
                 <SweetAlert
                     show={alert}
                     title="Successfully add to cart"

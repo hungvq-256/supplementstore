@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { initialLoadCart } from './actions/cart';
-import AdminPage from './features/AdminPage';
+import { googleSignup } from './actions/user';
 import ScrollToTop from './components/ScrollToTop';
+import AdminPage from './features/AdminPage';
+import CheckoutPage from './features/CheckoutPage';
 import MainPages from './pages';
 import './scss/style.scss';
-import CheckoutPage from './features/CheckoutPage';
-import { googleSignup } from './actions/user';
 
 function App() {
   const dispatch = useDispatch();

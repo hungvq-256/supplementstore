@@ -9,66 +9,63 @@ import './style.scss';
 const productPerSection = 8;
 
 const Products = () => {
-    const [loading, setLoading] = useState(true);
-    const [products, setProducts] = useState([]);
-    const [postsToShow, setPostsToShow] = useState([]);
+    const [loading, setLoading] = useState({
+        productLoading: true,
+        btnLoading: false
+    });
+    const { productLoading, btnLoading } = loading;
+
+    const [products, setProducts] = useState({
+        numberOfProduct: 0,
+        listProduct: []
+    });
     const [buttonShow, setButtonShow] = useState(true);
-    const [loadingBtn, setLoadingBtn] = useState(false);
     const [next, setNext] = useState(8);
 
-    const loopWithSlice = (end) => {
-        const slicedPosts = products.slice(0, end);
-        setPostsToShow(slicedPosts);
+    const handleLoadMorePosts = () => {
+        setLoading(prevalue => ({
+            ...prevalue,
+            btnLoading: true,
+            productLoading: true
+        }));
+        setNext(prevalue => prevalue + productPerSection);
     }
 
-    const handleLoadMorePosts = () => {
-        setLoadingBtn(true);
-        setTimeout(() => {
-            loopWithSlice(next + productPerSection);
-            setNext(prevalue => prevalue + productPerSection);
-            setLoadingBtn(false);
-        }, getRndInteger(800, 1500));
-    }
-    const getRndInteger = (min, max) => {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
     useEffect(() => {
-        const fetchHomeProducts = async () => {
+        (async () => {
             try {
-                const products = await productsApi.getAll();
-                const productsFilter = products.filter(item => item.id % 2 === 0);
-                setProducts(productsFilter);
+                const Fetchproducts = await productsApi.getAll();
+                const productsFilter = Fetchproducts.filter(item => item.id % 2 === 0);
+                const sliceProducts = productsFilter.slice(0, next);
+                setProducts(prevalue => ({
+                    ...prevalue,
+                    numberOfProduct: productsFilter.length,
+                    listProduct: sliceProducts
+                }));
+                setLoading(prevalue => ({
+                    ...prevalue,
+                    productLoading: false,
+                    btnLoading: false,
+                }));
+                if (next >= productsFilter.length) {
+                    setButtonShow(false)
+                }
             }
             catch (error) {
                 console.log(error)
             }
-        }
-        fetchHomeProducts();
-    }, []);
-
-    useEffect(() => {
-        if (products.length !== 0) {
-            const slicedPosts = products.slice(0, productPerSection);
-            setPostsToShow(slicedPosts);
-            setLoading(false);
-        }
-    }, [products]);
-
-    useEffect(() => {
-        if (products.length !== 0 && next >= products.length) {
-            setButtonShow(false)
-        }
-    }, [next, products]);
+        })()
+    }, [next]);
     return (
         <div>
             <div className="container">
                 <SectionTitle text={'New Products'} />
             </div>
             <div className="container products">
-                {loading ? <ProductItemSkeleton /> :
+                {productLoading ? <ProductItemSkeleton numberOfItem={products.listProduct.length} /> :
                     <div className="row">
                         <ProductItem
-                            listProduct={postsToShow}
+                            listProduct={products.listProduct}
                             column={6}
                             newTag={true}
                         />
@@ -77,7 +74,7 @@ const Products = () => {
                 {buttonShow &&
                     <div className="loadmore">
                         <div className="loadmore__btn" onClick={handleLoadMorePosts}>
-                            {loadingBtn ? <CircularProgress size={25} style={{ color: "#ffffff" }} /> : <p>more</p>}
+                            {btnLoading ? <CircularProgress size={25} style={{ color: "#ffffff" }} /> : <p>more</p>}
                         </div>
                     </div>
                 }

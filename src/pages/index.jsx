@@ -30,19 +30,19 @@ const MainPages = () => {
         }
         dispatch(RequestFetchProducts());
     }, [dispatch]);
-
     return (
         <div>
             <Header />
             <Switch>
                 <Route path="/" component={HomePage} exact></Route>
-                <Route path="/products/product-:id" component={ProductDetailPage}></Route>
-                <Route path='/products/:categories' component={ProductsPage}></Route>
+                <Route path="/products/:categories/product-:id" component={ProductDetailPage}></Route>
+                <Route path='/products' component={ProductsPage}></Route>
                 <Route path='/article/:articleparams' component={BlogPage}></Route>
                 <Route path='/search' component={SearchPage}></Route>
                 <Route path="/cart" component={CartPage}></Route>
                 <Route path='/contact' component={ContactPage}></Route>
                 <Route path='/about' component={AboutPage}></Route>
+                <Route component={AboutPage}></Route>
             </Switch>
             <BackToTopBtn />
             <Footer />

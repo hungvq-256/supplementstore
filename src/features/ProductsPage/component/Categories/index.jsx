@@ -1,54 +1,77 @@
-import { FormControl, NativeSelect } from '@material-ui/core';
-import React, { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Checkbox, FormControl, FormControlLabel, NativeSelect } from '@material-ui/core';
+import queryString from 'query-string';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import './style.scss';
 
 
-const ProductCategories = (props) => {
-    let categoriesArray = ["All Product", "Whey", "Mass Gainer", "BCAA", "Fat Burner", "Vitamin"];
-    let slug = ['all', 'whey', 'mass', 'bcaa', 'fat-burner', 'vitamin'];
-
+const ProductCategories = ({ onChangeFilter, onReceiveSortPrice, filter, onReceiveChecked }) => {
+    let categoriesArray = ["Whey", "Mass Gainer", "BCAA", "Fat Burner", "Vitamin"];
+    let queryParams = useMemo(() => {
+        return ['whey', 'mass', 'bcaa', 'fat burner', 'vitamin'];
+    }, []);
     let refCategory = useRef();
-    let { categories } = useParams();
     const [sortPrice, setSortPrice] = useState('');
+    const history = useHistory();
+    const queryParsed = queryString.parse(history.location.search);
+    const [queryCategory] = useState(queryParsed.type);
+    const [active, setActive] = useState(null);
 
-    const handleChange = (event) => {
+    const handleChangeSort = (event) => {
         let value = event.target.value;
-        props.onReceiveSortPrice(value);
+        onReceiveSortPrice(value);
         setSortPrice(value);
     };
 
-    const handleActiveCategory = (idx) => {
-        let listCategories = refCategory.current.children;
-        for (let i = 0; i < listCategories.length; i++) {
-            listCategories[i].className = listCategories[i].className.replace('active', '');
-        }
-        listCategories[idx].className = 'active';
+    const handleChangeFilter = (category) => {
+        onChangeFilter(category);
+    }
+
+    const handleChangeCheck = (e) => {
+        onReceiveChecked(e.target.checked);
     }
 
     useEffect(() => {
-        let categoryItem = ['all', 'whey', 'mass', 'bcaa', 'fat-burner', 'vitamin'];
-        handleActiveCategory(categoryItem.indexOf(categories));
-    }, [categories])
+        if (queryCategory === undefined) {
+            setActive(0);
+        }
+        else {
+            setActive(queryParams.indexOf(queryCategory) + 1)
+        }
+    }, [queryCategory, queryParams]);
+
+    useEffect(() => {
+        setActive(queryParams.indexOf(filter.type) + 1)
+    }, [filter.type, queryParams])
+
     return (
         <div className="categories">
             <h2>Categories</h2>
             <ul ref={refCategory}>
+                <li onClick={() => {
+                    handleChangeFilter('')
+                }}
+                    className={active === 0 ? "active" : ""}
+                >
+                    All Product
+                </li>
                 {categoriesArray.map((category, index) => (
-                    <li key={index}>
-                        <Link
-                            to={`/products/${slug[index]}`}
-                            onClick={() => { handleActiveCategory(index) }}
-                        >{category}
-                        </Link>
+                    <li
+                        key={index}
+                        onClick={() => {
+                            handleChangeFilter(queryParams[index])
+                        }}
+                        className={active === (index + 1) ? "active" : ""}
+                    >
+                        {category}
                     </li>
                 ))}
             </ul>
-            <FormControl style={{ width: '100%', marginBottom: '20px' }} >
+            <FormControl style={{ width: '100%', marginBottom: '5px', fontSize: '1em', fontFamily: "Poppins" }} >
                 <NativeSelect
                     value={sortPrice}
-                    name="age"
-                    onChange={handleChange}
+                    name="sort by price"
+                    onChange={handleChangeSort}
                     inputProps={{ 'aria-label': 'age' }}
                 >
                     <option value={-1} style={{ fontSize: '1em', fontFamily: "Poppins" }}>
@@ -58,6 +81,18 @@ const ProductCategories = (props) => {
                     <option value={1} style={{ fontSize: '1em', fontFamily: "Poppins" }}>Ascending Price</option>
                 </NativeSelect>
             </FormControl>
+            <FormControlLabel
+                style={{ marginBottom: '20px', display: "flex" }}
+                control={
+                    <Checkbox
+                        checked={Boolean(filter.isFreeShip)}
+                        onChange={handleChangeCheck}
+                        name="isFreeShip"
+                        color="primary"
+                    />
+                }
+                label="Free Ship"
+            />
         </div>
     );
 };

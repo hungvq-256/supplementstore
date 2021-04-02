@@ -49,7 +49,7 @@ const SearchPage = () => {
             </div>
             <div className="searchresult">
                 {filterProducts.map(item => (
-                    <Link to={`/products/product-${item.id}`} key={item.id} className='productresult'>
+                    <Link to={`/products/${item.type.split(' ').join("-")}/product-${item.id}`} key={item.id} className='productresult'>
                         <div className="productresult__productimg">
                             <div style={{ backgroundImage: `url(${item.img})` }}></div>
                         </div>

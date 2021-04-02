@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import "./style.scss";
+import { Link } from "react-router-dom";
 import sliderImg1 from '../../../../assets/img/slider-img1f.jpg';
 import sliderImg2 from '../../../../assets/img/slider-img2f.jpg';
 import sliderImg3 from '../../../../assets/img/slider-img3f.jpg';
@@ -11,8 +12,6 @@ import sliderImg2m from '../../../../assets/img/slider-img2m.jpg';
 import sliderImg3m from '../../../../assets/img/slider-img3m.jpg';
 import sliderImg4m from '../../../../assets/img/slider-img6m.jpg';
 import sliderImg5m from '../../../../assets/img/slider-img5m.jpg';
-
-import { Link } from "react-router-dom";
 
 export default class SlickSlider extends React.Component {
     constructor(props) {
@@ -26,8 +25,8 @@ export default class SlickSlider extends React.Component {
     handleActiveTextbox = (index) => {
         let textboxList = this.myRef.current.children;
         for (let i = 0; i < textboxList.length; i++) {
-            textboxList[i].className = textboxList[i].className.replace("active", " ")
-            textboxList[i].className = textboxList[i].className.replace("active1", " ")
+            textboxList[i].className = textboxList[i].className.replace("active", " ");
+            textboxList[i].className = textboxList[i].className.replace("active1", " ");
         }
         if (index % 2 === 0) {
             textboxList[index].className = "textbox active";
@@ -56,7 +55,7 @@ export default class SlickSlider extends React.Component {
         let textbox = textlist.map((item, index) => (
             <div className="textbox" key={index} >
                 <h2>{item}</h2>
-                <button><Link to='/products/all'>Shop Now</Link></button>
+                <button><Link to='/products'>Shop Now</Link></button>
             </div>
         ))
         return (

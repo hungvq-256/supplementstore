@@ -1,63 +1,156 @@
-import React, { useEffect, useState } from 'react';
+import queryString from 'query-string';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useHistory, useLocation } from 'react-router';
+import productsApi from '../../api/productsApi';
 import ProductItem from '../../components/ProductItem';
-import ProductCategories from './component/Categories';
-import { useSelector } from 'react-redux';
-import './style.scss'
-import { useParams } from 'react-router';
 import ProductItemSkeleton from '../../components/ProductItemSkeleton';
+import ProductCategories from './component/Categories';
+import PaginationRounded from './component/Pagination';
+import './style.scss';
+
 const ProductsPage = () => {
-    let productsFromStore = useSelector(state => state.products.listProducts);
-    let [listProducts, setListProducts] = useState([]);
-    let [loading, setLoading] = useState(true);
-    let [sortPrice, setSortPrice] = useState('');
-    let { categories } = useParams();
+    const history = useHistory();
+    const location = useLocation();
+    let [products, setProducts] = useState({
+        numberOfProduct: 0,
+        listProduct: [],
+        loading: true
+    });
+    const { numberOfProduct, listProduct, loading } = products;
+    let [sortPrice, setSortPrice] = useState(-1);
+
+    const queryParsed = useMemo(() => {
+        const params = queryString.parse(location.search);
+        return {
+            ...params,
+        }
+    }, [location.search]);
+
+    const productPerPage = 8;
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePushQueryToUrl = (filter) => {
+        history.push({
+            pathname: history.location.pathname,
+            search: queryString.stringify(filter)
+        })
+    }
+
+    const handleChangeFilter = (category) => {
+        if (category !== undefined) {
+            if (category === '') {
+                delete queryParsed.type
+                let filter = {
+                    ...queryParsed
+                }
+                handlePushQueryToUrl(filter);
+            }
+            else {
+                let filter = {
+                    ...queryParsed,
+                    type: category
+                }
+                handlePushQueryToUrl(filter);
+            }
+        }
+    }
 
     const onReceiveSortPrice = (value) => {
-        if (Number(value) !== sortPrice) {
-            setSortPrice(Number(value));
-        }
-    }
-    const getRndInteger = (min, max) => {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
-    useEffect(() => {
-        setLoading(true);
+        setSortPrice(Number(value));
+    };
 
-        const handleSortPrice = (productsArray) => {
-            if (sortPrice === 0) {
-                productsArray.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-            } else if (sortPrice === 1) {
-                productsArray.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    const handlePaginationClick = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleChecked = (checked) => {
+        if (checked) {
+            let filter = {
+                ...queryParsed,
+                isFreeShip: checked
             }
-            setListProducts(productsArray);
+            handlePushQueryToUrl(filter);
         }
-
-        if (categories === 'all') {
-            handleSortPrice([...productsFromStore]);
-        } else {
-            let filterProducts = productsFromStore.filter(product => product.type.includes(categories.split('-').join(' ')) === true);
-            handleSortPrice(filterProducts);
+        else {
+            delete queryParsed.isFreeShip;
+            let filter = {
+                ...queryParsed
+            }
+            handlePushQueryToUrl(filter);
         }
-    }, [categories, productsFromStore, sortPrice]);
+    }
 
     useEffect(() => {
-        if (listProducts.length !== 0) {
-            setTimeout(() => {
-                setLoading(false)
-            }, getRndInteger(200, 1000));
+        setCurrentPage(1);
+    }, [history.location]);
+
+    useEffect(() => {
+        setProducts(prevalue => ({
+            ...prevalue,
+            loading: true
+        }));
+        const handleSortByPrice = (filterProducts) => {
+            if (sortPrice === 0) {
+                return filterProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+            } else if (sortPrice === 1) {
+                return filterProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            }
+            return filterProducts;
         }
-    }, [listProducts])
+        (async () => {
+            try {
+                let filterProducts = await productsApi.getAll(queryParsed);
+                if (filterProducts.length > 8) {
+                    let indexOfFirst = productPerPage * currentPage - productPerPage;
+                    let indexOfLast = indexOfFirst + productPerPage;
+                    let sliceProducts = filterProducts.slice(indexOfFirst, indexOfLast);
+                    let sortByPrice = handleSortByPrice(sliceProducts);
+                    setProducts(prevalue => ({
+                        ...prevalue,
+                        numberOfProduct: filterProducts.length,
+                        listProduct: sortByPrice,
+                        loading: false
+                    }));
+                }
+                else {
+                    let sortByPrice = handleSortByPrice(filterProducts);
+                    setProducts(prevalue => ({
+                        ...prevalue,
+                        numberOfProduct: filterProducts.length,
+                        listProduct: sortByPrice,
+                        loading: false
+                    }));
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        })()
+    }, [sortPrice, currentPage, history.location, queryParsed]);
+
     return (
         <div className='container --productspage'>
             <div className="row">
                 <div className="col-12 col-lg-2">
-                    <ProductCategories onReceiveSortPrice={onReceiveSortPrice} />
+                    <ProductCategories
+                        onReceiveSortPrice={onReceiveSortPrice}
+                        onChangeFilter={handleChangeFilter}
+                        onReceiveChecked={handleChecked}
+                        filter={queryParsed}
+                    />
                 </div>
                 <div className="col-12 col-lg-10">
-                    {loading ? <ProductItemSkeleton numberOfItem={listProducts.length !== 0 ? listProducts.length : productsFromStore.length} /> :
+                    {loading ? <ProductItemSkeleton /> :
                         <div className="row --productspage">
-                            <ProductItem listProduct={listProducts} />
+                            <ProductItem listProduct={listProduct} />
                         </div>
+                    }
+                    {numberOfProduct > 8 &&
+                        <PaginationRounded
+                            onReceivePaginationClick={handlePaginationClick}
+                            count={Math.ceil(numberOfProduct / productPerPage)}
+                            page={currentPage}
+                        />
                     }
                 </div>
             </div>
