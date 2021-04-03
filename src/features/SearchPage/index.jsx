@@ -12,6 +12,7 @@ const SearchPage = () => {
 
     const handleSearchValue = (e) => {
         let value = e.target.value;
+
         if (typingTimeOutRef.current) {
             clearTimeout(typingTimeOutRef.current)
         }

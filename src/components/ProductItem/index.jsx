@@ -86,7 +86,7 @@ function ProductItem(props) {
                     <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`} title={item.title}>
                         <h3>{item.title}</h3>
                     </Link>
-                    <p>{`$${Number(item.price) % 1 !== 0 ? item.price : `${item.price}.00`}`}</p>
+                    <p>{`$${Number(item.price) % 1 !== 0 ? (item.price).toFixed(2) : `${item.price}.00`}`}</p>
                     <div className="btngroup">
                         <button onClick={() => { handleAddToCart(item.id) }}>
                             Add to cart

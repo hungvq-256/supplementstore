@@ -1,23 +1,56 @@
 import { Checkbox, FormControl, FormControlLabel, NativeSelect } from '@material-ui/core';
 import queryString from 'query-string';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './style.scss';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
 
+const useStyles = makeStyles({
+    root: {
+        maxWidth: "95%",
+        marginBottom: '20px',
+    },
+});
+
+function valuetext(value) {
+    return `$${value}`;
+}
+const marks = [
+    {
+        value: 0,
+        label: '$0',
+    },
+    {
+        value: 150,
+        label: '$150',
+    },
+];
 
 const ProductCategories = (props) => {
-    const { onChangeFilter, onReceiveSortPrice, filter, onReceiveFreeShipChecked, onReceiveNewProductChecked } = props;
+    const classes = useStyles();
+    const { onChangeFilter,
+        onReceiveSortPrice,
+        filter,
+        onReceiveFreeShipChecked,
+        onReceiveNewProductChecked,
+        onReceiveRangePrice } = props;
     let categoriesArray = ["Whey", "Mass Gainer", "BCAA", "Fat Burner", "Vitamin"];
     let queryParams = useMemo(() => {
         return ['whey', 'mass', 'bcaa', 'fat burner', 'vitamin'];
     }, []);
     const location = useLocation();
-    const history = useHistory();
-    const queryParsed = useMemo(()=>{
-        return queryString.parse(history.location.search);
-    },[location.search]);
-    const [queryCategory] = useState(queryParsed.type);
+    const queryParsed = useMemo(() => {
+        let query = queryString.parse(location.search);
+        return {
+            ...query
+        }
+    }, [location.search]);
     const [active, setActive] = useState(null);
+    const [rangePrice, setRangePrice] = useState([Number(filter.gtePrice), Number(filter.ltePrice)]);
+
+    const timeOutRef = useRef(null);
 
     const handleChangeSort = (event) => {
         let value = event.target.value;
@@ -35,7 +68,16 @@ const ProductCategories = (props) => {
     const handleCheckNewProduct = (e) => {
         onReceiveNewProductChecked(e.target.checked);
     }
+    const handleChangeRangePrice = (e, value) => {
+        setRangePrice(value);
+        if (timeOutRef.current) {
+            clearTimeout(timeOutRef.current)
+        }
+        timeOutRef.current = setTimeout(() => {
+            onReceiveRangePrice(value);
+        }, 500)
 
+    };
     useEffect(() => {
         if (queryParsed.type === undefined) {
             setActive(0);
@@ -43,14 +85,14 @@ const ProductCategories = (props) => {
         else {
             setActive(queryParams.indexOf(queryParsed.type) + 1)
         }
-    }, [queryParsed]);
-    
+    }, [queryParsed, queryParams]);
+
     return (
         <div className="categories">
             <h2>Categories</h2>
             <ul>
                 <li onClick={() => {
-                    handleChangeFilter('')
+                    handleChangeFilter(null)
                 }}
                     className={active === 0 ? "active" : ""}
                 >
@@ -95,7 +137,7 @@ const ProductCategories = (props) => {
                 label="Free Ship"
             />
             <FormControlLabel
-                style={{ marginBottom: '20px', display: "flex" }}
+                style={{ display: "flex" }}
                 control={
                     <Checkbox
                         checked={Boolean(filter.isNew)}
@@ -106,6 +148,22 @@ const ProductCategories = (props) => {
                 }
                 label="New Product"
             />
+
+            <div className={classes.root}>
+                <Typography id="range-slider" gutterBottom>
+                    Price Range
+                </Typography>
+                <Slider
+                    value={rangePrice}
+                    onChange={handleChangeRangePrice}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="range-slider"
+                    getAriaValueText={valuetext}
+                    max={150}
+                    marks={marks}
+                    step={10}
+                />
+            </div>
         </div>
     );
 };

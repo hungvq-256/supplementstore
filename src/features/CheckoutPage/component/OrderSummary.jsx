@@ -80,7 +80,7 @@ function OrderSummary({ clientInfo, onReceiveBackToForm, onReceiveConfirm }) {
                 <Typography className={classes.productName}>{item.title}</Typography>
                 {item.flavorChoosed && <Typography className={classes.productSubText} >Flavor: {item.flavorChoosed}</Typography>}
                 <Typography className={classes.productSubText}>
-                    Quantity: {item.quantity} x ${Number(item.price) % 1 !== 0 ? item.price : `${item.price}.00`}
+                    Quantity: {item.quantity} x ${Number(item.price) % 1 !== 0 ? (item.price).toFixed(2) : `${item.price}.00`}
                 </Typography>
             </Box>
             <Box className={classes.productPrice}>${Number(item.price) % 1 !== 0 ? (item.price * item.quantity).toFixed(2) : `${item.price * item.quantity}.00`}</Box>

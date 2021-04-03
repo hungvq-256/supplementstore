@@ -38,11 +38,6 @@
             -webkit-tap-highlight-color: transparent;
             display: block;
             height: 37px;
-            display: -webkit-inline-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            text-overflow: ellipsis;
-            overflow: hidden;
             text-decoration: none;
             @media (max-width: 767px) {
                 height: 37px;
@@ -54,6 +49,11 @@
                 font-family: "Poppins", sans-serif;
                 font-weight: 500;
                 line-height: 18px;
+                display: -webkit-inline-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+                overflow: hidden;
                 &:hover {
                     color: lightcoral;
                 }
@@ -71,14 +71,14 @@
             justify-content: space-between;
             align-items: center;
             button {
-                font-size: 1.6em;
+                font-size: 1.5em;
                 font-family: "Poppins", sans-serif;
                 font-weight: 500;
                 background: #ffffff;
                 border: 1px solid var(--orange-primary);
                 color: #111111;
                 border-radius: 4px;
-                padding: 5px 10px;
+                padding: 4px 8px;
                 outline: none;
                 cursor: pointer;
                 transition: 0.4s;

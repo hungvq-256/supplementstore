@@ -35,7 +35,7 @@ function CartItem(props) {
             <div className="cartitem__info">
                 <div className="textbox">
                     <h3>{item.title}</h3>
-                    <p>{`Price: $ ${item.price % 1 !== 0 ? item.price : `${item.price}.00`}`}</p>
+                    <p>{`Price: $ ${item.price % 1 !== 0 ? (item.price).toFixed(2) : `${item.price}.00`}`}</p>
                     {item.flavorChoosed ? <p>{`Flavor: ${item.flavorChoosed}`}</p> : ''}
                     <div className="quantitywrap">
                         <button onClick={() => { handleUpdateItem([index, -1]) }} className="quantitywrap__decreasement --btnctrl">
