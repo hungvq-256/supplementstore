@@ -1,7 +1,7 @@
 import { Checkbox, FormControl, FormControlLabel, NativeSelect } from '@material-ui/core';
 import queryString from 'query-string';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import './style.scss';
 
 
@@ -11,9 +11,11 @@ const ProductCategories = (props) => {
     let queryParams = useMemo(() => {
         return ['whey', 'mass', 'bcaa', 'fat burner', 'vitamin'];
     }, []);
-
+    const location = useLocation();
     const history = useHistory();
-    const queryParsed = queryString.parse(history.location.search);
+    const queryParsed = useMemo(()=>{
+        return queryString.parse(history.location.search);
+    },[location.search]);
     const [queryCategory] = useState(queryParsed.type);
     const [active, setActive] = useState(null);
 
@@ -35,18 +37,14 @@ const ProductCategories = (props) => {
     }
 
     useEffect(() => {
-        if (queryCategory === undefined) {
+        if (queryParsed.type === undefined) {
             setActive(0);
         }
         else {
-            setActive(queryParams.indexOf(queryCategory) + 1)
+            setActive(queryParams.indexOf(queryParsed.type) + 1)
         }
-    }, [queryCategory, queryParams]);
-
-    useEffect(() => {
-        setActive(queryParams.indexOf(filter.type) + 1)
-    }, [filter.type, queryParams])
-
+    }, [queryParsed]);
+    
     return (
         <div className="categories">
             <h2>Categories</h2>

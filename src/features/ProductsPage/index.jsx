@@ -17,7 +17,6 @@ const ProductsPage = () => {
         loading: true
     });
     const { numberOfProduct, listProduct, loading } = products;
-    let [sortPrice, setSortPrice] = useState(-1);
 
     const queryParsed = useMemo(() => {
         const params = queryString.parse(location.search);
@@ -39,41 +38,34 @@ const ProductsPage = () => {
     };
 
     const handleChangeFilter = (category) => {
-        if (category !== undefined) {
-            if (category === '') {
-                delete queryParsed.type;
-                let filter = {
-                    ...queryParsed,
-                    page: 1
-                };
-                handlePushQueryToUrl(filter);
-            }
-            else {
-                let filter = {
-                    ...queryParsed,
-                    type: category,
-                    page: 1
-                }
-                handlePushQueryToUrl(filter);
-            }
+        if (category === '') {
+            delete queryParsed.type;
+            handlePushQueryToUrl({
+                ...queryParsed,
+                page: 1
+            });
+        }
+        else {
+            handlePushQueryToUrl({
+                ...queryParsed,
+                type: category,
+                page: 1
+            });
         }
     }
 
     const onReceiveSortPrice = (value) => {
-        let filter = {
+        handlePushQueryToUrl({
             ...queryParsed,
             sort: value
-        }
-        handlePushQueryToUrl(filter);
-        setSortPrice(value);
+        });
     };
 
     const handlePaginationClick = (page) => {
-        let filter = {
+        handlePushQueryToUrl({
             ...queryParsed,
             page: page
-        }
-        handlePushQueryToUrl(filter);
+        });
         window.scrollTo({
             top: productsRef.current.offsetTop - 30,
             behavior: "smooth"
@@ -82,35 +74,31 @@ const ProductsPage = () => {
 
     const handleFreeShipChecked = (checked) => {
         if (checked) {
-            let filter = {
+            handlePushQueryToUrl({
                 ...queryParsed,
                 isFreeShip: checked
-            }
-            handlePushQueryToUrl(filter);
+            });
         }
         else {
             delete queryParsed.isFreeShip;
-            let filter = {
+            handlePushQueryToUrl({
                 ...queryParsed
-            };
-            handlePushQueryToUrl(filter);
+            });
         }
     }
 
     const handleNewProductChecked = (checked) => {
         if (checked) {
-            let filter = {
+            handlePushQueryToUrl({
                 ...queryParsed,
                 isNew: checked
-            }
-            handlePushQueryToUrl(filter);
+            });
         }
         else {
             delete queryParsed.isNew;
-            let filter = {
+            handlePushQueryToUrl({
                 ...queryParsed
-            };
-            handlePushQueryToUrl(filter);
+            });
         }
     }
 
@@ -127,9 +115,9 @@ const ProductsPage = () => {
             loading: true
         }));
         const handleSortByPrice = (filterProducts) => {
-            if (sortPrice === "priceDSC") {
+            if (queryParsed.sort === "priceDSC") {
                 return filterProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-            } else if (sortPrice === "priceASC") {
+            } else if (queryParsed.sort === "priceASC") {
                 return filterProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
             }
             return filterProducts;
@@ -163,7 +151,7 @@ const ProductsPage = () => {
                 console.log(error);
             }
         })()
-    }, [sortPrice, history.location, queryParsed]);
+    }, [queryParsed]);
 
     return (
         <div className='container --productspage'>
