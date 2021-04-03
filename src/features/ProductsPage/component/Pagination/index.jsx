@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
-import { useHistory } from 'react-router';
+import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -13,24 +12,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PaginationRounded({ onReceivePaginationClick, count }) {
+export default function PaginationRounded({ onReceivePaginationClick, count, page }) {
     const classes = useStyles();
-    const [page, setPage] = useState(1);
-    const history = useHistory();
     const handleChangePagination = (e, page) => {
-        setPage(page);
         onReceivePaginationClick(page);
     }
-    useEffect(() => {
-        setPage(1);
-    }, [history.location.search]);
-
-    // useEffect(() => {
-    //     window.scrollTo({
-    //         top: 0,
-    //         behavior: "smooth"
-    //     });
-    // }, [page]);
     return (
         <div className={classes.root}>
             <Pagination

@@ -5,7 +5,7 @@ import "./style.scss"
 const CategoryProduct = () => {
     const history = useHistory();
     const directToProducts = (type) => {
-        history.push(`/products?sort=priceDF&type=${type}`)
+        history.push(`/products?type=${type}`)
     }
     return (
         <div className="container category">

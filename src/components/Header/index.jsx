@@ -90,7 +90,7 @@ const Header = (props) => {
                         </div>
                         <div className="nav">
                             <ul className={isClose ? "nav__list" : "nav__list active"}>
-                                <NavLink activeClassName='active' to={`/products?sort=priceDF`}><li>Products</li></NavLink>
+                                <NavLink activeClassName='active' to={`/products`}><li>Products</li></NavLink>
                                 <NavLink activeClassName='active' to='/about'><li> About</li></NavLink>
                                 <NavLink activeClassName='active' to='/contact'><li>Contact</li></NavLink>
                             </ul>

@@ -23,12 +23,12 @@ const ProductsPage = () => {
         const params = queryString.parse(location.search);
         return {
             ...params,
-            sort: params.sort || "priceDF"
+            sort: params.sort || "priceDF",
+            page: params.page || 1
         }
     }, [location.search]);
-
+    const [initialQuery] = useState(queryParsed);
     const productPerPage = 8;
-    const [currentPage, setCurrentPage] = useState(1);
     const productsRef = useRef();
 
     const handlePushQueryToUrl = (filter) => {
@@ -43,14 +43,16 @@ const ProductsPage = () => {
             if (category === '') {
                 delete queryParsed.type;
                 let filter = {
-                    ...queryParsed
+                    ...queryParsed,
+                    page: 1
                 };
                 handlePushQueryToUrl(filter);
             }
             else {
                 let filter = {
                     ...queryParsed,
-                    type: category
+                    type: category,
+                    page: 1
                 }
                 handlePushQueryToUrl(filter);
             }
@@ -67,7 +69,11 @@ const ProductsPage = () => {
     };
 
     const handlePaginationClick = (page) => {
-        setCurrentPage(page);
+        let filter = {
+            ...queryParsed,
+            page: page
+        }
+        handlePushQueryToUrl(filter);
         window.scrollTo({
             top: productsRef.current.offsetTop - 30,
             behavior: "smooth"
@@ -107,9 +113,13 @@ const ProductsPage = () => {
             handlePushQueryToUrl(filter);
         }
     }
+
     useEffect(() => {
-        setCurrentPage(1);
-    }, [history.location]);
+        history.push({
+            pathname: "/products",
+            search: queryString.stringify(initialQuery)
+        })
+    }, [history, initialQuery])
 
     useEffect(() => {
         setProducts(prevalue => ({
@@ -128,7 +138,7 @@ const ProductsPage = () => {
             try {
                 let filterProducts = await productsApi.getAll(queryParsed);
                 if (filterProducts.length > 8) {
-                    let indexOfFirst = productPerPage * currentPage - productPerPage;
+                    let indexOfFirst = productPerPage * Number(queryParsed.page) - productPerPage;
                     let indexOfLast = indexOfFirst + productPerPage;
                     let sliceProducts = filterProducts.slice(indexOfFirst, indexOfLast);
                     let sortByPrice = handleSortByPrice(sliceProducts);
@@ -153,7 +163,7 @@ const ProductsPage = () => {
                 console.log(error);
             }
         })()
-    }, [sortPrice, currentPage, history.location, queryParsed]);
+    }, [sortPrice, history.location, queryParsed]);
 
     return (
         <div className='container --productspage'>
@@ -177,7 +187,7 @@ const ProductsPage = () => {
                         <PaginationRounded
                             onReceivePaginationClick={handlePaginationClick}
                             count={Math.ceil(numberOfProduct / productPerPage)}
-                            page={currentPage}
+                            page={Number(queryParsed.page)}
                         />
                     }
                 </div>
