@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import productsApi from '../../api/productsApi';
 import ProductItem from '../../components/ProductItem';
@@ -23,26 +23,28 @@ const ProductsPage = () => {
         const params = queryString.parse(location.search);
         return {
             ...params,
+            sort: params.sort || "priceDF"
         }
     }, [location.search]);
 
     const productPerPage = 8;
     const [currentPage, setCurrentPage] = useState(1);
+    const productsRef = useRef();
 
     const handlePushQueryToUrl = (filter) => {
         history.push({
             pathname: history.location.pathname,
             search: queryString.stringify(filter)
         })
-    }
+    };
 
     const handleChangeFilter = (category) => {
         if (category !== undefined) {
             if (category === '') {
-                delete queryParsed.type
+                delete queryParsed.type;
                 let filter = {
                     ...queryParsed
-                }
+                };
                 handlePushQueryToUrl(filter);
             }
             else {
@@ -56,14 +58,23 @@ const ProductsPage = () => {
     }
 
     const onReceiveSortPrice = (value) => {
-        setSortPrice(Number(value));
+        let filter = {
+            ...queryParsed,
+            sort: value
+        }
+        handlePushQueryToUrl(filter);
+        setSortPrice(value);
     };
 
     const handlePaginationClick = (page) => {
         setCurrentPage(page);
+        window.scrollTo({
+            top: productsRef.current.offsetTop - 30,
+            behavior: "smooth"
+        });
     };
 
-    const handleChecked = (checked) => {
+    const handleFreeShipChecked = (checked) => {
         if (checked) {
             let filter = {
                 ...queryParsed,
@@ -75,11 +86,27 @@ const ProductsPage = () => {
             delete queryParsed.isFreeShip;
             let filter = {
                 ...queryParsed
-            }
+            };
             handlePushQueryToUrl(filter);
         }
     }
 
+    const handleNewProductChecked = (checked) => {
+        if (checked) {
+            let filter = {
+                ...queryParsed,
+                isNew: checked
+            }
+            handlePushQueryToUrl(filter);
+        }
+        else {
+            delete queryParsed.isNew;
+            let filter = {
+                ...queryParsed
+            };
+            handlePushQueryToUrl(filter);
+        }
+    }
     useEffect(() => {
         setCurrentPage(1);
     }, [history.location]);
@@ -90,9 +117,9 @@ const ProductsPage = () => {
             loading: true
         }));
         const handleSortByPrice = (filterProducts) => {
-            if (sortPrice === 0) {
+            if (sortPrice === "priceDSC") {
                 return filterProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-            } else if (sortPrice === 1) {
+            } else if (sortPrice === "priceASC") {
                 return filterProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
             }
             return filterProducts;
@@ -135,11 +162,12 @@ const ProductsPage = () => {
                     <ProductCategories
                         onReceiveSortPrice={onReceiveSortPrice}
                         onChangeFilter={handleChangeFilter}
-                        onReceiveChecked={handleChecked}
+                        onReceiveFreeShipChecked={handleFreeShipChecked}
+                        onReceiveNewProductChecked={handleNewProductChecked}
                         filter={queryParsed}
                     />
                 </div>
-                <div className="col-12 col-lg-10">
+                <div ref={productsRef} className="col-12 col-lg-10">
                     {loading ? <ProductItemSkeleton /> :
                         <div className="row --productspage">
                             <ProductItem listProduct={listProduct} />

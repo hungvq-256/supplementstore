@@ -1,17 +1,17 @@
 import { Checkbox, FormControl, FormControlLabel, NativeSelect } from '@material-ui/core';
 import queryString from 'query-string';
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './style.scss';
 
 
-const ProductCategories = ({ onChangeFilter, onReceiveSortPrice, filter, onReceiveChecked }) => {
+const ProductCategories = (props) => {
+    const { onChangeFilter, onReceiveSortPrice, filter, onReceiveFreeShipChecked, onReceiveNewProductChecked } = props;
     let categoriesArray = ["Whey", "Mass Gainer", "BCAA", "Fat Burner", "Vitamin"];
     let queryParams = useMemo(() => {
         return ['whey', 'mass', 'bcaa', 'fat burner', 'vitamin'];
     }, []);
-    let refCategory = useRef();
-    const [sortPrice, setSortPrice] = useState('');
+
     const history = useHistory();
     const queryParsed = queryString.parse(history.location.search);
     const [queryCategory] = useState(queryParsed.type);
@@ -20,15 +20,18 @@ const ProductCategories = ({ onChangeFilter, onReceiveSortPrice, filter, onRecei
     const handleChangeSort = (event) => {
         let value = event.target.value;
         onReceiveSortPrice(value);
-        setSortPrice(value);
     };
 
     const handleChangeFilter = (category) => {
         onChangeFilter(category);
     }
 
-    const handleChangeCheck = (e) => {
-        onReceiveChecked(e.target.checked);
+    const handleCheckFreeShip = (e) => {
+        onReceiveFreeShipChecked(e.target.checked);
+    }
+
+    const handleCheckNewProduct = (e) => {
+        onReceiveNewProductChecked(e.target.checked);
     }
 
     useEffect(() => {
@@ -47,7 +50,7 @@ const ProductCategories = ({ onChangeFilter, onReceiveSortPrice, filter, onRecei
     return (
         <div className="categories">
             <h2>Categories</h2>
-            <ul ref={refCategory}>
+            <ul>
                 <li onClick={() => {
                     handleChangeFilter('')
                 }}
@@ -69,29 +72,41 @@ const ProductCategories = ({ onChangeFilter, onReceiveSortPrice, filter, onRecei
             </ul>
             <FormControl style={{ width: '100%', marginBottom: '5px', fontSize: '1em', fontFamily: "Poppins" }} >
                 <NativeSelect
-                    value={sortPrice}
+                    value={filter.sort}
                     name="sort by price"
                     onChange={handleChangeSort}
                     inputProps={{ 'aria-label': 'age' }}
                 >
-                    <option value={-1} style={{ fontSize: '1em', fontFamily: "Poppins" }}>
+                    <option value="priceDF" style={{ fontSize: '1em', fontFamily: "Poppins" }}>
                         Sort By Price
                     </option>
-                    <option value={0} style={{ fontSize: '1em', fontFamily: "Poppins" }}>Descending Price</option>
-                    <option value={1} style={{ fontSize: '1em', fontFamily: "Poppins" }}>Ascending Price</option>
+                    <option value="priceDSC" style={{ fontSize: '1em', fontFamily: "Poppins" }}>Descending Price</option>
+                    <option value="priceASC" style={{ fontSize: '1em', fontFamily: "Poppins" }}>Ascending Price</option>
                 </NativeSelect>
             </FormControl>
             <FormControlLabel
-                style={{ marginBottom: '20px', display: "flex" }}
+                style={{ display: "flex" }}
                 control={
                     <Checkbox
                         checked={Boolean(filter.isFreeShip)}
-                        onChange={handleChangeCheck}
+                        onChange={handleCheckFreeShip}
                         name="isFreeShip"
                         color="primary"
                     />
                 }
                 label="Free Ship"
+            />
+            <FormControlLabel
+                style={{ marginBottom: '20px', display: "flex" }}
+                control={
+                    <Checkbox
+                        checked={Boolean(filter.isNew)}
+                        onChange={handleCheckNewProduct}
+                        name="isNew"
+                        color="primary"
+                    />
+                }
+                label="New Product"
             />
         </div>
     );

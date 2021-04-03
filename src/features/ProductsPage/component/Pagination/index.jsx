@@ -25,12 +25,12 @@ export default function PaginationRounded({ onReceivePaginationClick, count }) {
         setPage(1);
     }, [history.location.search]);
 
-    useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }, [page]);
+    // useEffect(() => {
+    //     window.scrollTo({
+    //         top: 0,
+    //         behavior: "smooth"
+    //     });
+    // }, [page]);
     return (
         <div className={classes.root}>
             <Pagination

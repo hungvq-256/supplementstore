@@ -55,7 +55,7 @@ export default class SlickSlider extends React.Component {
         let textbox = textlist.map((item, index) => (
             <div className="textbox" key={index} >
                 <h2>{item}</h2>
-                <button><Link to='/products'>Shop Now</Link></button>
+                <button><Link to='/products?sort=priceDF'>Shop Now</Link></button>
             </div>
         ))
         return (

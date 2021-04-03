@@ -34,12 +34,12 @@ const Products = () => {
     useEffect(() => {
         (async () => {
             try {
-                const Fetchproducts = await productsApi.getAll();
-                const productsFilter = Fetchproducts.filter(item => item.id % 2 === 0);
-                const sliceProducts = productsFilter.slice(0, next);
+                const Fetchproducts = await productsApi.getAll({ isNew: true });
+                // const productsFilter = Fetchproducts.filter(item => item.id % 2 === 0);
+                const sliceProducts = Fetchproducts.slice(0, next);
                 setProducts(prevalue => ({
                     ...prevalue,
-                    numberOfProduct: productsFilter.length,
+                    numberOfProduct: Fetchproducts.length,
                     listProduct: sliceProducts
                 }));
                 setLoading(prevalue => ({
@@ -47,7 +47,7 @@ const Products = () => {
                     productLoading: false,
                     btnLoading: false,
                 }));
-                if (next >= productsFilter.length) {
+                if (next >= Fetchproducts.length) {
                     setButtonShow(false)
                 }
             }
