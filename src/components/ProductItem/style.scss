@@ -33,7 +33,7 @@
         }
     }
     &__textbox {
-        padding: 5px;
+        padding-top: 5px;
         a {
             -webkit-tap-highlight-color: transparent;
             display: block;
@@ -94,11 +94,14 @@
                 }
             }
             i {
-                width: 18px;
-                height: 100%;
+                width: 30px;
+                height: 30px;
+                padding: 2px;
+                border: 1.5px solid #e1e1e1;
+                position: relative;
+                border-radius: 50%;
                 display: flex;
                 align-items: center;
-                margin-right: 5px;
                 opacity: 0;
                 pointer-events: none;
                 transition: 0.5s;
@@ -106,7 +109,13 @@
                 @media (max-width: 991px) {
                     opacity: 1;
                     pointer-events: auto;
-                    margin-right: 5px;
+                }
+                svg {
+                    font-size: 20px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
                 }
                 &:hover {
                     svg {

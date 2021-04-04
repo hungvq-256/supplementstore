@@ -11,7 +11,20 @@ const useStyles = makeStyles({
     root: {
         maxWidth: "95%",
         marginBottom: '20px',
+        marginLeft: "5px"
     },
+    rangeLabel: {
+        display: "inline",
+        marginLeft: "-5px"
+    },
+    rangePrice: {
+        display: "block",
+        marginLeft: "-5px",
+        '@media (max-width:991px)': {
+            display: "inline",
+            marginLeft: "5px"
+        }
+    }
 });
 
 function valuetext(value) {
@@ -150,8 +163,11 @@ const ProductCategories = (props) => {
             />
 
             <div className={classes.root}>
-                <Typography id="range-slider" gutterBottom>
-                    Price Range
+                <Typography id="range-slider" className={classes.rangeLabel} >
+                    Price Range:
+                </Typography>
+                <Typography className={classes.rangePrice}>
+                    ${rangePrice[0]} - ${rangePrice[1]}
                 </Typography>
                 <Slider
                     value={rangePrice}

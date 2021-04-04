@@ -6,7 +6,7 @@ import sliderImg1 from '../../../../assets/img/slider-img1f.jpg';
 import sliderImg2 from '../../../../assets/img/slider-img2f.jpg';
 import sliderImg3 from '../../../../assets/img/slider-img3f.jpg';
 import sliderImg4 from '../../../../assets/img/slider-img4f.jpg';
-import sliderImg5 from '../../../../assets/img/slider-img5.jpg';
+import sliderImg5 from '../../../../assets/img/slider-img6.jpg';
 import sliderImg1m from '../../../../assets/img/slider-img1m.jpg';
 import sliderImg2m from '../../../../assets/img/slider-img2m.jpg';
 import sliderImg3m from '../../../../assets/img/slider-img3m.jpg';

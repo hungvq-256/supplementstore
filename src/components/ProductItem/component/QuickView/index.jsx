@@ -124,7 +124,7 @@ function QuickView({ productInfo, onReceiveCloseQuickView }) {
                                 </button>
                             </div>
                             <div className="buttonwrap">
-                                <button onClick={handleAddToCart} className="btn__addtocart">Add To Cart</button>
+                                <button disable onClick={handleAddToCart} className="btn__addtocart">Add To Cart</button>
                                 <Link className="btn__addtocart --gotodetail" to={`/products/${(productInfo.type).split(' ').join('-')}/product-${productInfo.id}`}>
                                     Go To Detail
                                 </Link>
