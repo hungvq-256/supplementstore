@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         padding: "10px",
         borderRadius: "5px",
         background: "#ffffff",
-        maxHeight: "550px"
+        maxHeight: "700px"
     },
     buttongroup: {
         display: "flex",

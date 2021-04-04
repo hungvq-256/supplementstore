@@ -1,11 +1,9 @@
 import { Checkbox, FormControl, FormControlLabel, NativeSelect } from '@material-ui/core';
-import queryString from 'query-string';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import './style.scss';
+import Slider from '@material-ui/core/Slider';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
+import React, { useEffect, useRef, useState } from 'react';
+import './style.scss';
 
 const useStyles = makeStyles({
     root: {
@@ -40,26 +38,19 @@ const marks = [
         label: '$150',
     },
 ];
+let queryParams = ['whey', 'mass', 'bcaa', 'fat burner', 'vitamin'];
 
 const ProductCategories = (props) => {
     const classes = useStyles();
+
     const { onChangeFilter,
         onReceiveSortPrice,
         filter,
         onReceiveFreeShipChecked,
         onReceiveNewProductChecked,
         onReceiveRangePrice } = props;
+
     let categoriesArray = ["Whey", "Mass Gainer", "BCAA", "Fat Burner", "Vitamin"];
-    let queryParams = useMemo(() => {
-        return ['whey', 'mass', 'bcaa', 'fat burner', 'vitamin'];
-    }, []);
-    const location = useLocation();
-    const queryParsed = useMemo(() => {
-        let query = queryString.parse(location.search);
-        return {
-            ...query
-        }
-    }, [location.search]);
     const [active, setActive] = useState(null);
     const [rangePrice, setRangePrice] = useState([Number(filter.gtePrice), Number(filter.ltePrice)]);
 
@@ -92,13 +83,13 @@ const ProductCategories = (props) => {
 
     };
     useEffect(() => {
-        if (queryParsed.type === undefined) {
+        if (filter.type === undefined) {
             setActive(0);
         }
         else {
-            setActive(queryParams.indexOf(queryParsed.type) + 1)
+            setActive(queryParams.indexOf(filter.type) + 1)
         }
-    }, [queryParsed, queryParams]);
+    }, [filter]);
 
     return (
         <div className="categories">
@@ -109,7 +100,7 @@ const ProductCategories = (props) => {
                 }}
                     className={active === 0 ? "active" : ""}
                 >
-                    All Product
+                    All Products
                 </li>
                 {categoriesArray.map((category, index) => (
                     <li

@@ -18,9 +18,11 @@ export default class SlickSlider extends React.Component {
         super(props);
         this.state = {
             count: 0,
-            sliderIndex: 0
+            sliderIndex: 0,
+            resize: 3
         }
         this.myRef = React.createRef();
+
     }
     handleActiveTextbox = (index) => {
         let textboxList = this.myRef.current.children;
@@ -35,7 +37,7 @@ export default class SlickSlider extends React.Component {
         }
     }
     componentDidMount() {
-        this.handleActiveTextbox(0)
+        this.handleActiveTextbox(0);
     }
     render() {
         let settings = {
@@ -59,7 +61,7 @@ export default class SlickSlider extends React.Component {
             </div>
         ))
         return (
-            <div className="--slider">
+            <div className="--slider" ref={this.widthDeviceRef}>
                 <Slider {...settings}>
                     <div className="slideritem">
                         <picture>

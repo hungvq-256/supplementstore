@@ -1,0 +1,92 @@
+.slick-prev:before,
+.slick-next:before {
+    color: #000000;
+}
+.--carousel {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    .carouselTitleWrap {
+        display: flex;
+        align-items: center;
+        i {
+            width: 50px;
+            height: 50px;
+            display: block;
+            margin-left: 20px;
+            animation: saleIconAnimation 0.5s infinite alternate-reverse;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+    .slick-slider {
+        padding-bottom: 70px;
+        .slick-list {
+            .slick-track {
+                .slick-slide {
+                    outline: none;
+                }
+            }
+        }
+        .slick-prev,
+        .slick-next {
+            font-size: 0;
+            line-height: 0;
+            position: absolute;
+            top: 95%;
+            right: 45%;
+            display: block;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            cursor: pointer;
+            color: transparent;
+            border: none;
+            outline: none;
+            background: transparent;
+            @media (max-width: 991px) {
+                right: 40%;
+            }
+            @media (max-width: 767px) {
+                right: 36%;
+            }
+        }
+        .slick-prev {
+            left: 45%;
+            right: initial;
+            @media (max-width: 991px) {
+                left: 40%;
+            }
+            @media (max-width: 767px) {
+                left: 36%;
+            }
+        }
+        .slick-prev:before,
+        .slick-next:before {
+            font-size: 40px;
+            opacity: 0.7;
+            @media (max-width: 767px) {
+                font-size: 38px;
+            }
+        }
+        .slick-prev:hover:before,
+        .slick-next:hover:before {
+            opacity: 1 !important;
+        }
+    }
+}
+@keyframes saleIconAnimation {
+    from {
+        transform: translateY(-8px) scale(1);
+        opacity: 0.75;
+    }
+    to {
+        transform: translateY(4px) scale(1.2);
+        opacity: 1;
+    }
+}

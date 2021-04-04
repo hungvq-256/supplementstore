@@ -1,0 +1,25 @@
+.carouselProductItem {
+    outline: none;
+    .productitem {
+        margin: 0 10px;
+        .carouselProductItemImg {
+            display: block;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            .productitem__img {
+                padding-top: 100%;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                transform: scale(1);
+                transition: 0.4s ease-in-out;
+                @media (min-width: 1025px) {
+                    &:hover {
+                        transform: scale(1.1);
+                        transition: 0.4s ease-in-out;
+                    }
+                }
+            }
+        }
+    }
+}

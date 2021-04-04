@@ -2,29 +2,30 @@ import VisibilitySharpIcon from '@material-ui/icons/VisibilitySharp';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import swal from 'sweetalert2';
 import { withSwalInstance } from 'sweetalert2-react';
-import { addToCart } from '../../actions/cart';
-import QuickView from './component/QuickView';
+import { addToCart } from '../../../../../../actions/cart';
+import QuickView from '../../../../../../components/ProductItem/component/QuickView';
+import Slider from "react-slick";
 import './style.scss';
 
 const SweetAlert = withSwalInstance(swal);
 
-ProductItem.propTypes = {
+CarouselProductItem.propTypes = {
     listProduct: PropTypes.array,
     column: PropTypes.number
 };
 
-ProductItem.defaultProps = {
+CarouselProductItem.defaultProps = {
     listProduct: [],
     column: 6,
     newTag: false
 }
-function ProductItem(props) {
+function CarouselProductItem(props) {
     let flavors = ["Chocolate", "Vani", "Strawberry", "Cookies"];
     const [flavorValue, setFlavorValue] = useState("Chocolate");
-    const { listProduct, column, newTag } = props;
+    const { listProduct, settings } = props;
     const dispatch = useDispatch();
     // const location = useLocation(); //get current url location.pathname
     const [statusPopup, setStatusPopup] = useState(false);
@@ -32,6 +33,7 @@ function ProductItem(props) {
     const [productPopup, setProductPopup] = useState({});
     const [alert, setAlert] = useState(false);
     const flavorRef = useRef();
+    const history = useHistory();
 
     const handleAddToCart = (id) => {
         const productItem = listProduct.find(item => item.id === id);
@@ -79,13 +81,15 @@ function ProductItem(props) {
         let initialPrice = (Number(price) * 100) / (100 - Number(salePercent));
         return initialPrice % 1 !== 0 ? initialPrice.toFixed(2) : `${initialPrice}.00`
     }
-
+    const handleDirectToProduct = (type, id) => {
+        history.push(`products/${type}/product-${id}`)
+    }
     const products = listProduct.map((item) => (
-        <div className={`col-${column} col-xxs col-sm-4 col-lg-3`} key={item.id}>
+        <div className="carouselProductItem" key={item.id}>
             <div className="productitem">
-                <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`}>
+                <div className="carouselProductItemImg" onClick={() => { handleDirectToProduct(item.type, item.id) }}>
                     <div className="productitem__img" style={{ backgroundImage: `url(${item.img})` }}></div>
-                </Link>
+                </div>
                 <div className="productitem__textbox">
                     <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`} title={item.title}>
                         <h3>{item.title}</h3>
@@ -101,11 +105,7 @@ function ProductItem(props) {
                         <i onClick={() => handleDisplayQuickView(item.id)}><VisibilitySharpIcon /></i>
                     </div>
                 </div>
-                {(newTag || item.isSale) &&
-                    <div className="newtag">
-                        {item.isSale ? `-${item.salePercent}%` : "NEW"}
-                    </div>
-                }
+                <div className="newtag">-{item.salePercent}%</div>
             </div>
         </div>
     ));
@@ -117,7 +117,9 @@ function ProductItem(props) {
     }, [statusPopup]);
     return (
         <>
-            {products}
+            <Slider {...settings}>
+                {products}
+            </Slider>
             {statusPopup &&
                 <div className="productpopupwrap">
                     <div className="productpopup">
@@ -167,4 +169,4 @@ function ProductItem(props) {
     );
 }
 
-export default ProductItem;
+export default CarouselProductItem;

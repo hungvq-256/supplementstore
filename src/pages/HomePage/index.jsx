@@ -4,6 +4,7 @@ import Benefits from './component/Benefits';
 import Blogs from './component/Blogs';
 import CategoryProduct from './component/CategoryProduct';
 import Products from './component/Products';
+import ProductsCarousel from './component/ProductsCarousel';
 import SlickSlider from './component/SlickSlider';
 import './style.scss';
 
@@ -14,6 +15,7 @@ const HomePage = () => {
             <Benefits />
             <CategoryProduct />
             <Products />
+            <ProductsCarousel />
             <div className="backgroundfixedwrap">
                 <div className="backgroundfixed" style={{ backgroundImage: `url(${BackgroundImg})` }}>
                     <div className="container --backgroundfixed">
