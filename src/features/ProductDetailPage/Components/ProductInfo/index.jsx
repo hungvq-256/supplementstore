@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from "react-router";
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../../../../actions/cart';
-import { withSwalInstance } from 'sweetalert2-react';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from "react-router";
 import swal from 'sweetalert2';
+import { withSwalInstance } from 'sweetalert2-react';
+import { addToCart } from '../../../../actions/cart';
 import "./style.scss";
 
 const SweetAlert = withSwalInstance(swal);
@@ -18,34 +19,30 @@ ProductInfo.defaultTypes = {
     productInfo: {}
 }
 
-function ProductInfo({ productInfo }) {
-    let flavors = ["Chocolate", "Vani", "Strawberry", "Cookies"];
-    let [quantity, setQuantity] = useState(1);
-    let [flavorValue, setFlavorValue] = useState(flavors[0]);
+function ProductInfo({ productInfo, enqueueSnackbar }) {
+    const flavors = ["Chocolate", "Vani", "Strawberry", "Cookies"];
+    const [quantity, setQuantity] = useState(1);
+    const [flavorValue, setFlavorValue] = useState(flavors[0]);
+
+    const [active, setActive] = useState(0);
     const [alert, setAlert] = useState(false);
-    let dispatch = useDispatch();
-    let flavorRef = useRef();
+    const dispatch = useDispatch();
     let { id } = useParams();
 
-    const handleDecreasement = () => {
-        if (quantity > 1) {
-            setQuantity(prevalue => prevalue - 1)
+    const handleQuantity = (value) => {
+        if (value === 1) {
+            setQuantity(prevalue => prevalue += value);
+        }
+        else if (quantity > 1) {
+            setQuantity(prevalue => prevalue += value);
         }
     }
-    const handleIncreasement = () => {
-        setQuantity(prevalue => prevalue + 1)
-    }
+
     const handleFlavorChecked = (e) => {
         setFlavorValue(e.target.value);
     }
     const handleActiveFlavor = (idx) => {
-        if (flavorRef.current !== undefined) {
-            let flavorList = flavorRef.current.children;
-            for (let i = 0; i < flavorList.length; i++) {
-                flavorList[i].className = flavorList[i].className.replace('active', '');
-            }
-            flavorList[idx].className = "active";
-        }
+        setActive(idx);
     }
     const handleAddToCart = () => {
         let newItem = {
@@ -54,9 +51,16 @@ function ProductInfo({ productInfo }) {
             flavorChoosed: (productInfo.type !== 'fat burner' && productInfo.type !== 'vitamin') ? flavorValue : ''
         }
         let action = addToCart(newItem);
-        dispatch(action);
-        setAlert(true);
+        if (quantity !== 0) {
+            dispatch(action);
+            setAlert(true);
+        } else {
+            enqueueSnackbar("Please choose quantity of product", {
+                variant: "warning"
+            });
+        }
     }
+
     const handleUpperCase = (string) => {
         let convertToArray = string.toLowerCase().split(' ');
         let upperFirstLetter = convertToArray.map(item => `${item.charAt(0).toUpperCase()}${item.slice(1)}`);
@@ -65,9 +69,7 @@ function ProductInfo({ productInfo }) {
     useEffect(() => {
         setQuantity(1);
     }, [id]);
-    useEffect(() => {
-        handleActiveFlavor(0);
-    }, []);
+
     return (
         <div className="product">
             <div className="product__title">
@@ -85,13 +87,13 @@ function ProductInfo({ productInfo }) {
                     <p>{`$${productInfo.price % 1 !== 0 ? productInfo.price : `${productInfo.price}.00`}`}</p>
                     <p className="description">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                     Incidunt et ad inventore quam fugit amet, blanditiis, vero expedita obcaecati nostrum eaque,
-                    nobis enim excepturi vitae repellendus ipsum eveniet iste quos!</p>
+                        nobis enim excepturi vitae repellendus ipsum eveniet iste quos!</p>
                     {(productInfo.type === 'vitamin' || productInfo.type === 'fat burner') ? '' :
                         <div className="flavor">
                             Flavor:
-                            <ul ref={flavorRef} className="flavorlist">
+                                <ul className="flavorlist">
                                 {flavors.map((flavor, index) => (
-                                    <li key={index} >
+                                    <li key={index} className={active === index ? "active" : ""} >
                                         <label
                                             htmlFor={`flavor-${index}`}
                                             className="flavor-option"
@@ -116,7 +118,7 @@ function ProductInfo({ productInfo }) {
                     }
                     < div className="btn" >
                         <div className="quantityfield">
-                            <button onClick={handleDecreasement} className="quantityfield__decreasement --btnctrl">
+                            <button onClick={() => { handleQuantity(-1) }} className="quantityfield__decreasement --btnctrl">
                                 <RemoveIcon style={{ fontSize: "14px" }} />
                             </button>
                             <input type="number"
@@ -125,7 +127,7 @@ function ProductInfo({ productInfo }) {
                                 onChange={event => {
                                     setQuantity(Number(event.target.value));
                                 }} />
-                            <button onClick={handleIncreasement} className="quantityfield__increasement --btnctrl">
+                            <button onClick={() => { handleQuantity(1) }} className="quantityfield__increasement --btnctrl">
                                 <AddIcon style={{ fontSize: "16px" }} />
                             </button>
                         </div>
@@ -144,4 +146,4 @@ function ProductInfo({ productInfo }) {
     );
 }
 
-export default ProductInfo;
+export default withSnackbar(ProductInfo);

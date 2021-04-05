@@ -8,12 +8,23 @@ import { Provider } from "react-redux";
 import reportWebVitals from './reportWebVitals';
 import store from "./store";
 import { BrowserRouter } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
+import Slide from '@material-ui/core/Slide';
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       <BrowserRouter>
-        <App />
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          TransitionComponent={Slide}
+          autoHideDuration={3000}
+        >
+          <App />
+        </SnackbarProvider>
       </BrowserRouter>
     </React.StrictMode>
   </Provider>,

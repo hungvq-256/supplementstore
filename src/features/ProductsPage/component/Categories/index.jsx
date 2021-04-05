@@ -150,7 +150,7 @@ const ProductCategories = (props) => {
                         color="primary"
                     />
                 }
-                label="New Product"
+                label="New Products"
             />
 
             <div className={classes.root}>

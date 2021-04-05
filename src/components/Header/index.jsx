@@ -9,8 +9,10 @@ import { logout } from '../../actions/user';
 import Supplement from '../../assets/img/supplement-logo.png';
 import FormDialog from '../../features/Auth/component/FormDialog';
 import "./style.scss";
+import { withSnackbar } from 'notistack';
 
-const Header = (props) => {
+
+const Header = ({ enqueueSnackbar }) => {
     const [isClose, setIsClose] = useState(true);
     const numberOfItem = useSelector(state => state.cart.numberOfItem)
     const [header, setHeader] = useState(false);
@@ -58,6 +60,13 @@ const Header = (props) => {
         dispatch(logout());
         setAnchorEl(null);
         setOpen(false);
+        enqueueSnackbar("Logout successful", {
+            variant: "success",
+            anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'right',
+            },
+        });
     };
 
     useEffect(() => {
@@ -149,4 +158,4 @@ const Header = (props) => {
     );
 };
 
-export default Header;
+export default withSnackbar(Header);
