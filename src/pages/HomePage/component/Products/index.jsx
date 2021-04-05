@@ -62,7 +62,7 @@ const Products = () => {
                 <SectionTitle text={'New Products'} />
             </div>
             <div className="container products">
-                {productLoading ? <ProductItemSkeleton numberOfItem={products.listProduct.length} /> :
+                {productLoading ? <ProductItemSkeleton /> :
                     <div className="row">
                         <ProductItem
                             listProduct={products.listProduct}

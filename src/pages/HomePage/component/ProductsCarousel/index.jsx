@@ -4,6 +4,7 @@ import SectionTitle from "../../../../components/SectionTitle";
 import CarouselProductItem from "./components/CarouselProductItem";
 import SaleImg from '../../../../assets/img/sale.svg';
 import './style.scss';
+import ProductItemSkeleton from "../../../../components/ProductItemSkeleton";
 
 export default class CenterMode extends Component {
     constructor(props) {
@@ -112,7 +113,8 @@ export default class CenterMode extends Component {
                     <SectionTitle text={'Sale Off Products'} />
                     <i><img src={SaleImg} alt="sale img" /></i>
                 </div>
-                {this.state.listProducts && <CarouselProductItem settings={settings} listProduct={this.state.listProducts} />}
+                {this.state.listProducts ? <CarouselProductItem settings={settings} listProduct={this.state.listProducts} />
+                    : <ProductItemSkeleton numberOfItem={4} />}
             </div>
         );
     }
