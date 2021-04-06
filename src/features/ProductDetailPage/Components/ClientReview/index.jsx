@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import "./style.scss";
 import { withSnackbar } from 'notistack';
 import { timeSince } from "./timeSince";
+import ReviewWithoutLogin from "./ReviewWithoutLogin";
 require("firebase/firestore");
 
 const ClientReview = ({ enqueueSnackbar }) => {
@@ -22,6 +23,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
         return value.toString().padStart(2, 0);
     }
     var d = new Date();
+
     const handleSubmitReview = (e) => {
         e.preventDefault();
         var d = new Date();
@@ -69,6 +71,41 @@ const ClientReview = ({ enqueueSnackbar }) => {
             }
         }
     }
+
+    const onSubmitReviewWithoutLogin = (values) => {
+        if (!!values.comment) {
+            (async () => {
+                try {
+                    await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).doc().set({
+                        userName: values.fullName,
+                        email: values.email,
+                        comment: values.comment,
+                        createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
+                        date: d
+                    })
+                    setSubmit(prevalue => !prevalue);
+                    enqueueSnackbar("Submitted Successfully", {
+                        variant: "success",
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        },
+                    });
+                }
+                catch (error) {
+                    console.error("Error writing document: ", error);
+                }
+            })()
+        } else {
+            enqueueSnackbar("Please type something before submit", {
+                variant: "warning",
+                anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                },
+            });
+        }
+    }
     useEffect(() => {
         (async () => {
             try {
@@ -97,7 +134,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                                 </div>
                             </div>
                             <div className="reviewItem__textbox">
-                                <div className="userNameWrap"> 
+                                <div className="userNameWrap">
                                     <h3>{item.userName}</h3>
                                     <p>{timeSince(new Date(Date.now() - (Date.parse(d) + 1000 - ((item.date.seconds) * 1000))))} ago</p>
                                 </div>
@@ -107,7 +144,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         </div>
                     )) : <p className="emptytext">Leave the first review for the product</p>}
                 </div>
-                <div className="textField">
+                {!!userInfo.userName ? <div className="textField">
                     <form onSubmit={handleSubmitReview}>
                         <textarea
                             onChange={handleChangeTextArea}
@@ -118,6 +155,8 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         <button type="submit" className="sendreviewbtn">Send Review</button>
                     </form>
                 </div>
+                    :
+                    <ReviewWithoutLogin onSubmitReviewWithoutLogin={onSubmitReviewWithoutLogin} />}
             </div>
         </div>
     );
