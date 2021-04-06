@@ -4,6 +4,7 @@ import productsApi from '../../api/productsApi';
 import ProductDetailSkeleton from '../../components/ProductDetailSkeleton';
 import ProductItemSkeleton from '../../components/ProductItemSkeleton';
 import SectionTitle from '../../components/SectionTitle';
+import ClientReview from './Components/ClientReview';
 import ProductInfo from './Components/ProductInfo';
 import RelatedProduct from './Components/RelatedProduct';
 import TabProduct from './Components/TabProduct';
@@ -39,6 +40,10 @@ const ProductDetailPage = () => {
                 {loading ? <ProductDetailSkeleton /> : <ProductInfo productInfo={productInfo} />}
             </div>
             <TabProduct />
+            <div className="container">
+                <SectionTitle text={'Review Product'} />
+            </div>
+            <ClientReview />
             <div className="container">
                 <SectionTitle text={'Related Products'} />
             </div>

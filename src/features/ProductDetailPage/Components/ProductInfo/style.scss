@@ -4,10 +4,13 @@
         position: relative;
         border-bottom: 0.4px solid rgba(0, 0, 0, 0.4);
         h2 {
-            font-size: 3em;
+            font-size: 2.8em;
             font-weight: 600;
             font-family: "Poppins", sans-serif;
             line-height: 33px;
+            @media (max-width: 767px){
+                font-size: 2.5em;
+            }
         }
         p {
             font-size: 1.5em;
