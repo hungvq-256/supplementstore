@@ -12,8 +12,11 @@ import './style.scss';
 
 const ProductDetailPage = () => {
     const [loading, setLoading] = useState(true);
-    const [productInfo, setProductInfo] = useState({});
-    const [relatedProducts, setRelatedProducts] = useState([]);
+    const [products, setProducts] = useState({
+        productInfo: [],
+        relatedProducts: []
+    });
+    const { productInfo, relatedProducts } = products;
     let { id, categories } = useParams();
     const convertCategoriesSlug = (categories) => {
         return categories.split('-').join(" ");
@@ -24,13 +27,16 @@ const ProductDetailPage = () => {
             try {
                 let productItem = await productsApi.get(id);
                 let relatedProducts = await productsApi.getAll({ type: convertCategoriesSlug(categories) });
-                setProductInfo(productItem);
-                setRelatedProducts(relatedProducts);
-                setLoading(false);
+                setProducts(prevalue => ({
+                    ...prevalue,
+                    productInfo: productItem,
+                    relatedProducts: relatedProducts
+                }));
             }
             catch (error) {
                 console.log(error);
             }
+            setLoading(false);
         })()
     }, [id, categories]);
 

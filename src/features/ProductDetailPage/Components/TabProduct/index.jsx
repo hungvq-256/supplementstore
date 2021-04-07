@@ -8,6 +8,7 @@ TabProduct.propTypes = {
 function TabProduct(props) {
     const tabList = useRef();
     const [index, setIndex] = useState(0);
+
     const handleActiveTab = (idx) => {
         let tabs = tabList.current.children;
         setIndex(idx);

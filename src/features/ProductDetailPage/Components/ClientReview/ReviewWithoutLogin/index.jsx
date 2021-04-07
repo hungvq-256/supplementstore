@@ -84,7 +84,7 @@ const ReviewWithoutLogin = (props) => {
     return (
         <div className={classes.root}>
             <form className={classes.form} onSubmit={form.handleSubmit(handleSubmit)}>
-                <InputField className={classes.textField} name="fullName" label="Full Name" form={form} fullWidth />
+                <InputField className={classes.textField} name="fullName" label="Display Name" form={form} fullWidth />
                 <InputField className={classes.textField} name="email" label="Email" form={form} fullWidth />
                 <textarea className={classes.textarea} value={textValue} onChange={handleChangeTextArea}></textarea>
                 <button type="submit" className={classes.sendreviewbtn} >

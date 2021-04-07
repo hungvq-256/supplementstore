@@ -69,7 +69,6 @@ function ProductInfo({ productInfo, enqueueSnackbar }) {
     useEffect(() => {
         setQuantity(1);
     }, [id]);
-
     return (
         <div className="product">
             <div className="product__title">

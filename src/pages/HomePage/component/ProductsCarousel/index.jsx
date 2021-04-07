@@ -105,7 +105,9 @@ export default class CenterMode extends Component {
             infinite: true,
             speed: 500,
             slidesToShow: this.state.numberOfItem,
-            slidesToScroll: this.state.numberOfItem
+            slidesToScroll: this.state.numberOfItem,
+            autoplay: true,
+            autoplaySpeed: 3500,
         };
         return (
             <div className="container --carousel" ref={this.widthDeviceRef}>
@@ -114,7 +116,7 @@ export default class CenterMode extends Component {
                     <i><img src={SaleImg} alt="sale img" /></i>
                 </div>
                 {this.state.listProducts ? <CarouselProductItem settings={settings} listProduct={this.state.listProducts} />
-                    : <ProductItemSkeleton numberOfItem={4} />}
+                    : <ProductItemSkeleton numberOfItem={this.state.numberOfItem} />}
             </div>
         );
     }

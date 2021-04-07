@@ -31,7 +31,7 @@ function ProductItemSkeleton({ numberOfItem }) {
         <Box overflow='hidden'>
             <Grid container spacing={3}>
                 {(Array.from(new Array(numberOfItem))).map((item, index) => (
-                    <Grid item xs={6} sm={4} md={3} key={index} >
+                    <Grid item xs={6} sm={numberOfItem >= 8 ? 4 : (12 / numberOfItem)} md={numberOfItem >= 8 ? 3 : (12 / numberOfItem)} key={index} >
                         <Box className={classes.productiem}>
                             <Skeleton animation="wave" variant="rect" height="190px" width="100%" />
                             <Box pt={1}>

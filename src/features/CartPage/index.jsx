@@ -3,9 +3,9 @@ import CartList from './Components/CartList';
 
 const CartPage = () => {
     return (
-        <div>
+        <>
             <CartList />
-        </div>
+        </>
     );
 };
 

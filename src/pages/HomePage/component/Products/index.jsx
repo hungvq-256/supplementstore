@@ -35,7 +35,6 @@ const Products = () => {
         (async () => {
             try {
                 const Fetchproducts = await productsApi.getAll({ isNew: true });
-                // const productsFilter = Fetchproducts.filter(item => item.id % 2 === 0);
                 const sliceProducts = Fetchproducts.slice(0, next);
                 setProducts(prevalue => ({
                     ...prevalue,
@@ -62,7 +61,7 @@ const Products = () => {
                 <SectionTitle text={'New Products'} />
             </div>
             <div className="container products">
-                {productLoading ? <ProductItemSkeleton /> :
+                {productLoading ? <ProductItemSkeleton numberOfItem={products.listProduct.length !== 0 ? products.listProduct.length : 8} /> :
                     <div className="row">
                         <ProductItem
                             listProduct={products.listProduct}

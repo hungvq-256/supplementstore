@@ -6,14 +6,18 @@ import "./style.scss";
 import { withSnackbar } from 'notistack';
 import { timeSince } from "./timeSince";
 import ReviewWithoutLogin from "./ReviewWithoutLogin";
+import { LinearProgress } from "@material-ui/core";
 require("firebase/firestore");
 
+let db = firebase.firestore();
 const ClientReview = ({ enqueueSnackbar }) => {
-    var db = firebase.firestore();
     const { id } = useParams();
     const [textAreaValue, setTextAreaValue] = useState('');
     const [listReview, setListReview] = useState([]);
-    const [submit, setSubmit] = useState(false);
+    const [submit, setSubmit] = useState({
+        state: false,
+        loading: true
+    })
     const userInfo = useSelector(state => state.user.current);
 
     const handleChangeTextArea = (e) => {
@@ -22,22 +26,30 @@ const ClientReview = ({ enqueueSnackbar }) => {
     const numberFormat = (value) => {
         return value.toString().padStart(2, 0);
     }
+    const upperCaseFirstLetter = (string) => {
+        let convertToArray = string.toLowerCase().split(' ');
+        let upperFirstLetter = convertToArray.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        return upperFirstLetter.join(' ');
+    }
     var d = new Date();
 
     const handleSubmitReview = (e) => {
         e.preventDefault();
-        var d = new Date();
+        let d = new Date();
         if (userInfo.userName && textAreaValue) {
             (async () => {
                 try {
                     await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).doc().set({
-                        userName: userInfo.userName,
+                        userName: upperCaseFirstLetter(userInfo.userName),
                         email: userInfo.email,
                         comment: textAreaValue,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
                         date: d
                     })
-                    setSubmit(prevalue => !prevalue);
+                    setSubmit(prevalue => ({
+                        ...prevalue,
+                        state: !prevalue.state,
+                    }));
                     setTextAreaValue('');
                     enqueueSnackbar("Submitted Successfully", {
                         variant: "success",
@@ -71,19 +83,22 @@ const ClientReview = ({ enqueueSnackbar }) => {
             }
         }
     }
-
     const onSubmitReviewWithoutLogin = (values) => {
-        if (!!values.comment) {
+        let d = new Date();
+        if (values.comment) {
             (async () => {
                 try {
                     await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).doc().set({
-                        userName: values.fullName,
+                        userName: upperCaseFirstLetter(values.fullName),
                         email: values.email,
                         comment: values.comment,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
                         date: d
                     })
-                    setSubmit(prevalue => !prevalue);
+                    setSubmit(prevalue => ({
+                        ...prevalue,
+                        state: !prevalue.state,
+                    }));
                     enqueueSnackbar("Submitted Successfully", {
                         variant: "success",
                         anchorOrigin: {
@@ -107,6 +122,10 @@ const ClientReview = ({ enqueueSnackbar }) => {
         }
     }
     useEffect(() => {
+        setSubmit(prevalue => ({
+            ...prevalue,
+            loading: true
+        }));
         (async () => {
             try {
                 let fetchCollectionReview = await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).get()
@@ -119,31 +138,38 @@ const ClientReview = ({ enqueueSnackbar }) => {
             catch (error) {
                 console.error("Error writing document: ", error);
             }
+            setSubmit(prevalue => ({
+                ...prevalue,
+                loading: false
+            }));
         })()
-    }, [db, id, submit]);
+    }, [id, submit.state]);
+
     return (
         <div className="container --reviewSection">
             <div className="reviewWrap">
-                <div className="reviewField">
-                    {listReview.length !== 0 ? listReview.map((item, index) =>
-                    (
-                        <div className="reviewItem" key={index}>
-                            <div className="reviewItem__avatar">
-                                <div className="reviewItem__avatar-img">
-                                    <p>{item.userName.split(' ')[0].charAt(0)}</p>
+                {submit.loading ? <LinearProgress style={{ marginBottom: "50px" }} /> :
+                    <div className="reviewField">
+                        {listReview.length !== 0 ? listReview.map((item, index) =>
+                        (
+                            <div className="reviewItem" key={index}>
+                                <div className="reviewItem__avatar">
+                                    <div className="reviewItem__avatar-img">
+                                        <p>{item.userName.split(' ')[0].charAt(0)}</p>
+                                    </div>
+                                </div>
+                                <div className="reviewItem__textbox">
+                                    <div className="userNameWrap">
+                                        <h3>{item.userName}</h3>
+                                        <p>{timeSince(new Date(Date.now() - (Date.parse(d) + 1000 - ((item.date.seconds) * 1000))))} ago</p>
+                                    </div>
+                                    <p>{item.comment}</p>
+                                    <p>{item.createdAt}</p>
                                 </div>
                             </div>
-                            <div className="reviewItem__textbox">
-                                <div className="userNameWrap">
-                                    <h3>{item.userName}</h3>
-                                    <p>{timeSince(new Date(Date.now() - (Date.parse(d) + 1000 - ((item.date.seconds) * 1000))))} ago</p>
-                                </div>
-                                <p>{item.comment}</p>
-                                <p>{item.createdAt}</p>
-                            </div>
-                        </div>
-                    )) : <p className="emptytext">Leave the first review for the product</p>}
-                </div>
+                        )) : <p className="emptytext">Leave the first review for the product</p>}
+                    </div>
+                }
                 {!!userInfo.userName ? <div className="textField">
                     <form onSubmit={handleSubmitReview}>
                         <textarea
