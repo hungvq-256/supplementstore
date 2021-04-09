@@ -51,7 +51,7 @@ export default function FormDialog({ open, onReceiveCloseState }) {
             <>
               <Login />
               <Box className={classes.switchText} onClick={() => setMode(MODE.signup)}>
-                Don't have an account. Sign in here
+                Don't have an account. Signup here
               </Box>
             </>
           }

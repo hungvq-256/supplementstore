@@ -90,7 +90,7 @@ const Login = ({ enqueueSnackbar }) => {
                 <LockOutlined></LockOutlined>
             </Avatar>
             <Typography component="h3" variant="h5" className={classes.title}>
-                LOG IN
+                LOGIN
             </Typography>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <InputField name="email" label="Email" form={form} fullWidth />
