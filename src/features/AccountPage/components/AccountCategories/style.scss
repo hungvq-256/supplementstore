@@ -1,0 +1,19 @@
+.usercategories {
+    height: 100%;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 10px;
+    li {
+        font-size: 1.7em;
+        font-weight: 500;
+        padding: 10px 0;
+        border-bottom: 1px solid #e1e1e1;
+        cursor: pointer;
+        &:hover {
+            color: var(--orange-primary);
+        }
+        &.active {
+            color: var(--orange-primary);
+        }
+    }
+}

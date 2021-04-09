@@ -5,6 +5,7 @@ import { fetchProducts, fetchProductsFail, fetchProductsSuccess } from '../actio
 import productsApi from '../api/productsApi';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import AccountPage from '../features/AccountPage';
 import CartPage from '../features/CartPage';
 import ProductDetailPage from '../features/ProductDetailPage';
 import ProductsPage from '../features/ProductsPage';
@@ -42,6 +43,7 @@ const MainPages = () => {
                 <Route path="/cart" component={CartPage}></Route>
                 <Route path='/contact' component={ContactPage}></Route>
                 <Route path='/about' component={AboutPage}></Route>
+                <Route path='/account' component={AccountPage}></Route>
                 <Route component={AboutPage}></Route>
             </Switch>
             <BackToTopBtn />

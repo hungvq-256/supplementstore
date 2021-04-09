@@ -1,12 +1,14 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
+import firebase from "firebase/app";
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import { removeAllCart } from '../../actions/cart.js';
 import CheckoutForm from './component/CheckoutForm.jsx';
 import OrderSummary from './component/OrderSummary.jsx';
 import "./style.scss";
+require("firebase/firestore");
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -61,10 +63,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 const CheckoutPage = () => {
+    let db = firebase.firestore();
+    const user = useSelector(state => state.user.current);
+    let orderList = useSelector(state => state.cart.cartList);
+    let total = useSelector(state => state.cart.totalPrice);
     const classes = useStyles();
-    const [clientInfo, setClientInfo] = useState({});
+    const [clientInfo, setClientInfo] = useState(user);
     const [orderSummary, setOrderSummary] = useState(false);
     const [orderConfirm, setOrderConfirm] = useState(false);
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const handleNext = (values, checkValue) => {
@@ -80,11 +87,32 @@ const CheckoutPage = () => {
     const handleBackToForm = () => {
         setOrderSummary(false);
     }
+    const numberFormat = (value) => {
+        return value.toString().padStart(2, 0);
+    }
     const handleConfirm = () => {
-        setOrderConfirm(true);
-        let action = removeAllCart();
-        dispatch(action);
-        localStorage.removeItem("cart");
+        let d = new Date();
+        setLoading(true);
+        (async () => {
+            try {
+                await db.collection(`users/${user.userId}/purchareHistory`).doc().set({
+                    name: clientInfo.userName,
+                    phoneNumber: clientInfo.phoneNumber,
+                    address: clientInfo.address,
+                    cartList: orderList,
+                    total: total.toFixed(2),
+                    createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
+                    date: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                setOrderConfirm(true);
+                dispatch(removeAllCart());
+                localStorage.removeItem("cart");
+            }
+            catch (error) {
+                console.log(error.message);
+            }
+            setLoading(false);
+        })()
     }
 
     const firstUpperLetter = (string) => {
@@ -128,12 +156,13 @@ const CheckoutPage = () => {
                         clientInfo={clientInfo}
                         onReceiveBackToForm={handleBackToForm}
                         onReceiveConfirm={handleConfirm}
+                        loading={loading}
                     />}
 
                 {orderConfirm &&
                     <Box >
                         <Typography className={classes.orderSuccessfully} style={{ textAlign: "center" }}>
-                            Thank for your purchase, {firstUpperLetter(clientInfo.fullName)}!
+                            Thank for your purchase, {firstUpperLetter(clientInfo.userName)}!
                         </Typography>
                         <Button variant="contained" onClick={handleBackToForm} style={{ marginTop: "25px" }}>
                             <Link to="/" style={{ textDecoration: "none", color: "#000000" }}>Back to home</Link>

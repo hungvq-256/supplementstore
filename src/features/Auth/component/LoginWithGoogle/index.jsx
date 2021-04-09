@@ -9,7 +9,7 @@ import { withSnackbar } from 'notistack';
 
 const LoginWithGoogle = ({ enqueueSnackbar }) => {
     const dispatch = useDispatch();
-    const onSubmit = () => {
+    const onLogin = () => {
         var provider = new firebase.auth.GoogleAuthProvider();
         fire.auth().signInWithPopup(provider)
             .then((result) => {
@@ -21,9 +21,7 @@ const LoginWithGoogle = ({ enqueueSnackbar }) => {
                 let userInfo = {
                     userId: user.uid,
                     userName: user.displayName,
-                    photoUrl: user.photoURL,
                     email: user.email,
-                    phone: user.phoneNumber,
                     token: token
                 }
                 localStorage.setItem("user", JSON.stringify(userInfo));
@@ -41,7 +39,7 @@ const LoginWithGoogle = ({ enqueueSnackbar }) => {
     }
     return (
         <div style={{ padding: "10px 0", cursor: "pointer" }}>
-            <div onClick={onSubmit} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div onClick={onLogin} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <i style={{ display: "block", width: "20px", marginRight: "5px" }}>
                     <img src={googleIcon} alt="google icon" />
                 </i>

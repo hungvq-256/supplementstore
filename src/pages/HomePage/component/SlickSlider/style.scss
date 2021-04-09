@@ -156,7 +156,7 @@
 
 @keyframes slidefromleft {
     from {
-        opacity: 0.3;
+        opacity: 0;
         transform: translateX(-150px);
     }
     to {
@@ -166,7 +166,7 @@
 }
 @keyframes slidefromright {
     from {
-        opacity: 0.3;
+        opacity: 0;
         transform: translateX(150px);
     }
     to {
@@ -221,9 +221,6 @@
                 font-size: 1.7em;
                 line-height: 37px;
             }
-            // translate: translateY(-20px);
-            // animation-delay: 0.3s;
-            // animation: slidedown 1.2s;
         }
         button {
             background: var(--orange-primary);
@@ -234,8 +231,6 @@
             margin-top: 50px;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            // animation-delay: 0.3s;
-            // animation: slideup 1.2s;
             a {
                 text-decoration: none;
                 color: #ffffff;

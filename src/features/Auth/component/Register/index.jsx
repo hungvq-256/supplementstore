@@ -1,32 +1,64 @@
-import React from 'react';
+import firebase from "firebase/app";
+import { withSnackbar } from 'notistack';
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { requestSignupAction } from "../../../../actions/user";
 // import PropTypes from 'prop-types';
 import RegisterForm from '../RegisterForm';
+require("firebase/firestore");
 
-// Register.propTypes = {
-
-// };
-
-function Register(props) {
-    // const dispatch = useDispatch();
+let db = firebase.firestore();
+function Register({ enqueueSnackbar }) {
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const handleSubmit = (values) => {
-        // const requestSignUp = () => async dispatch => {
-        //     try {
-        //         let res = await userApi.register(values);
-        //         let action = requestSignupAction(res);
-        //         dispatch(action);
-        //     }
-        //     catch (error) {
-        //         console.log(error);
-        //     }
-        // }
-        // dispatch(requestSignUp());
-        alert("This feature is not available right now, please sign in with your Google account")
+        const handleSignUp = () => async dispatch => {
+            setLoading(true);
+            try {
+                let result = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password);
+                let user = result.user;
+                await user.updateProfile({
+                    displayName: values.fullName,
+                })
+                await db.collection("users").doc(`${user.uid}`).set({
+                    userId: user.uid,
+                    userName: user.displayName,
+                    email: user.email,
+                    address: null,
+                    phoneNumber: null,
+                    cart: null,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                })
+                let userInfo = {
+                    userId: user.uid,
+                    userName: user.displayName,
+                    email: user.email,
+                    address: null,
+                    phoneNumber: null,
+                    cart: null
+                }
+
+                localStorage.setItem("user", JSON.stringify(userInfo));
+                dispatch(requestSignupAction(userInfo));
+                enqueueSnackbar("Signup Successful", {
+                    variant: "success",
+                });
+            }
+            catch (error) {
+                enqueueSnackbar(error.message, {
+                    variant: "warning",
+                });
+            }
+            setLoading(false);
+        }
+        dispatch(handleSignUp());
     }
+
     return (
         <div>
-            <RegisterForm onSubmit={handleSubmit} />
+            <RegisterForm onSubmit={handleSubmit} onLoading={loading} />
         </div>
     );
 }
 
-export default Register;
+export default withSnackbar(Register);

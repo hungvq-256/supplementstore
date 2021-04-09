@@ -10,6 +10,12 @@ export const googleSignup = (data) => {
         payload: data
     }
 }
+export const updateUserInfo = (data) => {
+    return {
+        type: "UPDATE_USERINFO",
+        payload: data
+    }
+}
 export const logout = () => {
     return {
         type: "LOGOUT"

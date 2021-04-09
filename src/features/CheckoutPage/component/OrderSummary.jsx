@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, makeStyles, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
 OrderSummary.propTypes = {
@@ -69,8 +69,12 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         margin: theme.spacing(2, 0, 0, 0),
     },
+    submit: {
+        width: "100px",
+        height: "36px"
+    }
 }))
-function OrderSummary({ clientInfo, onReceiveBackToForm, onReceiveConfirm }) {
+function OrderSummary({ clientInfo, onReceiveBackToForm, onReceiveConfirm, loading }) {
     const classes = useStyles();
     let orderList = useSelector(state => state.cart.cartList);
     let total = useSelector(state => state.cart.totalPrice);
@@ -113,9 +117,9 @@ function OrderSummary({ clientInfo, onReceiveBackToForm, onReceiveConfirm }) {
             <Box className={classes.client}>
                 <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <Typography className={classes.clientText}>
-                        Name: {firstUpperLetter(clientInfo.fullName)}
+                        Name: {firstUpperLetter(clientInfo.userName)}
                     </Typography>
-                    <Typography className={classes.clientText}>Phone: {clientInfo.phone}</Typography>
+                    <Typography className={classes.clientText}>Phone: {clientInfo.phoneNumber}</Typography>
                 </Box>
                 <Typography className={classes.clientText}>Email: {clientInfo.email}</Typography>
                 <Typography className={classes.clientText}>Address: {clientInfo.address}</Typography>
@@ -128,8 +132,8 @@ function OrderSummary({ clientInfo, onReceiveBackToForm, onReceiveConfirm }) {
                     className={classes.submit}
                     variant="contained"
                     color="primary" mt={2}>
-                    Confirm
-            </Button>
+                    {loading ? <CircularProgress size={22} style={{ color: "#ffffff" }} /> : "Confirm"}
+                </Button>
             </Box>
         </Box>
     );

@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Avatar, Button, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Button, CircularProgress, makeStyles, Typography } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 // import PropTypes from "prop-types";
 import React from 'react';
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 //     onSubmit: PropTypes.func,
 // }
 const RegisterForm = (props) => {
-    const { onSubmit } = props;
+    const { onSubmit, onLoading } = props;
     const classes = useStyles();
     const schema = yup.object().shape({
         fullName: yup.string().required("Please enter your full name")
@@ -72,7 +72,7 @@ const RegisterForm = (props) => {
                 <PasswordField name="password" label="Password" form={form} />
                 <PasswordField name="retypePassword" label="Retype Password" form={form} />
                 <Button type="submit" className={classes.submit} variant="contained" color="primary" fullWidth mt={2}>
-                    Create an account
+                    {onLoading ? <CircularProgress size={25} style={{ color: "#ffffff" }} /> : "Create an new account"}
                 </Button>
             </form>
         </div>

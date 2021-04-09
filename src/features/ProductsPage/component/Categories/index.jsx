@@ -169,6 +169,7 @@ const ProductCategories = (props) => {
                     max={150}
                     marks={marks}
                     step={10}
+                    style={{ color: "#000000" }}
                 />
             </div>
         </div>

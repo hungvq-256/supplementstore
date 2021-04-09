@@ -44,7 +44,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         email: userInfo.email,
                         comment: textAreaValue,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
-                        date: d
+                        date: firebase.firestore.FieldValue.serverTimestamp()
                     })
                     setSubmit(prevalue => ({
                         ...prevalue,
@@ -67,18 +67,10 @@ const ClientReview = ({ enqueueSnackbar }) => {
             if (!userInfo.userName) {
                 enqueueSnackbar("Please login before leave the review", {
                     variant: "warning",
-                    anchorOrigin: {
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    },
                 });
             } else {
                 enqueueSnackbar("Please type something before submit", {
                     variant: "warning",
-                    anchorOrigin: {
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    },
                 });
             }
         }
@@ -93,7 +85,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         email: values.email,
                         comment: values.comment,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
-                        date: d
+                        date: firebase.firestore.FieldValue.serverTimestamp()
                     })
                     setSubmit(prevalue => ({
                         ...prevalue,
@@ -101,10 +93,6 @@ const ClientReview = ({ enqueueSnackbar }) => {
                     }));
                     enqueueSnackbar("Submitted Successfully", {
                         variant: "success",
-                        anchorOrigin: {
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                        },
                     });
                 }
                 catch (error) {
@@ -114,10 +102,6 @@ const ClientReview = ({ enqueueSnackbar }) => {
         } else {
             enqueueSnackbar("Please type something before submit", {
                 variant: "warning",
-                anchorOrigin: {
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                },
             });
         }
     }
@@ -161,7 +145,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                                 <div className="reviewItem__textbox">
                                     <div className="userNameWrap">
                                         <h3>{item.userName}</h3>
-                                        <p>{timeSince(new Date(Date.now() - (Date.parse(d) + 1000 - ((item.date.seconds) * 1000))))} ago</p>
+                                        <p>{timeSince(new Date(Date.now() - (Date.parse(d) - ((item.date.seconds) * 1000))))} ago</p>
                                     </div>
                                     <p>{item.comment}</p>
                                     <p>{item.createdAt}</p>

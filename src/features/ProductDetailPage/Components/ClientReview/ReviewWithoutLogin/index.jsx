@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     textarea: {
         width: "100%",
         height: "150px",
-        fontSize: "1.6em",
+        fontSize: "16px",
         resize: "none",
         outline: "none",
         borderColor: "#cccccc",

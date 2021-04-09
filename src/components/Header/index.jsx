@@ -4,13 +4,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useHistory, useLocation } from 'react-router-dom';
 import { logout } from '../../actions/user';
 import Supplement from '../../assets/img/supplement-logo.png';
 import FormDialog from '../../features/Auth/component/FormDialog';
-import "./style.scss";
+import firebase from "firebase/app";
 import { withSnackbar } from 'notistack';
-
+import "./style.scss";
 
 const Header = ({ enqueueSnackbar }) => {
     const [isClose, setIsClose] = useState(true);
@@ -22,9 +22,9 @@ const Header = ({ enqueueSnackbar }) => {
     // const [showNav, setShowNav] = useState(true);
 
     const user = useSelector(state => state.user.current);
-    const isLogin = !!user.userId;
     const dispatch = useDispatch();
     const location = useLocation();
+    const history = useHistory();
     const { pathname } = location;
 
     const handleClickOpen = () => {
@@ -56,26 +56,33 @@ const Header = ({ enqueueSnackbar }) => {
         setAnchorEl(null);
     };
     const handleLogout = () => {
-        localStorage.removeItem("user");
-        dispatch(logout());
-        setAnchorEl(null);
-        setOpen(false);
-        enqueueSnackbar("Logout successful", {
-            variant: "success",
-            anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'right',
-            },
+        firebase.auth().signOut().then(() => {
+            localStorage.removeItem("user");
+            dispatch(logout());
+            setAnchorEl(null);
+            setOpen(false);
+            enqueueSnackbar("Logout successful", {
+                variant: "success",
+            });
+        }).catch((error) => {
+            enqueueSnackbar(error.message, {
+                variant: "warning",
+            });
         });
+        if (history.location.pathname === '/account') {
+            history.goBack();
+        }
     };
-
+    const handleDirectToAccount = () => {
+        history.push("/account");
+        setAnchorEl(null);
+    }
     useEffect(() => {
         window.addEventListener('scroll', changeBackgroundHd);
         return () => {
             window.removeEventListener('scroll', changeBackgroundHd);
         };
     }, []);
-
     // useEffect(() => {
     //     const handleDisplayNav = () => {
     //         const currentValue = window.scrollY;
@@ -110,13 +117,14 @@ const Header = ({ enqueueSnackbar }) => {
                         <Link to='/search'>
                             <SearchIcon className='searchicon' />
                         </Link>
-                        {!isLogin && <i onClick={handleClickOpen}>
-                            <PersonIcon className='adminicon' />
-                        </i>}
-                        {isLogin &&
+                        {user.userName ?
                             <div className="userIcon" onClick={handleOpenAccount}>
                                 <p>{user.userName.charAt(0)}</p>
                             </div>
+                            :
+                            <i onClick={handleClickOpen}>
+                                <PersonIcon className='adminicon' />
+                            </i>
                         }
                         <i className='carticonwrap'>
                             <Link to="/cart">
@@ -130,7 +138,7 @@ const Header = ({ enqueueSnackbar }) => {
                     </div>
                 </div>
             </header>
-            {!isLogin && <FormDialog open={open} onReceiveCloseState={onReceiveCloseState} />}
+            {!user.userName && <FormDialog open={open} onReceiveCloseState={onReceiveCloseState} />}
             <Menu
                 anchorEl={anchorEl}
                 keepMounted
@@ -147,6 +155,12 @@ const Header = ({ enqueueSnackbar }) => {
                 getContentAnchorEl={null}
             >
                 <Typography style={{ padding: "10px" }}>Hi, {user.userName}</Typography>
+                <MenuItem
+                    onClick={handleDirectToAccount}
+                    style={{ display: "flex", justifyContent: "center" }}
+                >
+                    My Account
+                </MenuItem>
                 <MenuItem
                     onClick={handleLogout}
                     style={{ display: "flex", justifyContent: "center" }}
