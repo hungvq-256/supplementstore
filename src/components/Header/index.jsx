@@ -69,8 +69,8 @@ const Header = ({ enqueueSnackbar }) => {
                 variant: "warning",
             });
         });
-        if (history.location.pathname === '/account') {
-            history.goBack();
+        if (history.location.pathname === '/account' || history.location.pathname === '/account/purchase-history') {
+            history.push("/");
         }
     };
     const handleDirectToAccount = () => {

@@ -29,31 +29,35 @@ const PurchaseHistory = () => {
     }, []);
     return (
         <div className="purchaseHistoryWrapper">
-            {loading ? <CircularProgress className="loadingpurchasehistory" size={50} style={{ color: "#cccccc" }} /> : purchasedList.map((item, index) => (
-                <div className="purchasehistory" key={index}>
-                    <div className="orderdat">
-                        <p>{item.createdAt}</p>
-                    </div>
-                    {item.cartList.map((cartitem, index) => (
-                        <div className="orderitem">
-                            <div className="productinfo">
-                                <div className="subtext">
-                                    <p className="numericalorder">{index + 1}.</p>
-                                    <h3 className='orderitem_producttitle'>{cartitem.title}</h3>
-                                </div>
-                                <div className="subtext">
-                                    {cartitem.flavorChoosed && <p>Flavor: {cartitem.flavorChoosed}</p>}
-                                    <p>{`Quantity: ${cartitem.quantity} x $${cartitem.price % 1 !== 0 ? (cartitem.price).toFixed(2) : `${cartitem.price}.00`}`}</p>
-                                </div>
+            {loading ? <CircularProgress className="loadingpurchasehistory" size={50} style={{ color: "#cccccc" }} />
+                : (purchasedList.length !== 0 ?
+                    purchasedList.map((item, index) => (
+                        <div className="purchasehistory" key={index}>
+                            <div className="orderdat">
+                                <p>{item.createdAt}</p>
                             </div>
-                            <div className="price">${(cartitem.price * cartitem.quantity).toFixed(2)}</div>
+                            {item.cartList.map((cartitem, index) => (
+                                <div className="orderitem">
+                                    <div className="productinfo">
+                                        <div className="subtext">
+                                            <p className="numericalorder">{index + 1}.</p>
+                                            <h3 className='orderitem_producttitle'>{cartitem.title}</h3>
+                                        </div>
+                                        <div className="subtext">
+                                            {cartitem.flavorChoosed && <p>Flavor: {cartitem.flavorChoosed}</p>}
+                                            <p>{`Quantity: ${cartitem.quantity} x $${cartitem.price % 1 !== 0 ? (cartitem.price).toFixed(2) : `${cartitem.price}.00`}`}</p>
+                                        </div>
+                                    </div>
+                                    <div className="price">${(cartitem.price * cartitem.quantity).toFixed(2)}</div>
+                                </div>
+                            ))}
+                            <div className="totalprice">
+                                <p>Total: ${item.total}</p>
+                            </div>
                         </div>
-                    ))}
-                    <div className="totalprice">
-                        <p>Total: ${item.total}</p>
-                    </div>
-                </div>
-            ))
+                    ))
+                    : <p className="notiemptypurchasehistory">Maybe you have not bought something in our store</p>
+                )
             }
         </div>
     );
