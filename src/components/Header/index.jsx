@@ -18,6 +18,7 @@ const Header = ({ enqueueSnackbar }) => {
     const [header, setHeader] = useState(false);
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [photoUrl, setPhotoUrl] = useState(null);
     // const [preValue, setPreValue] = useState(0);
     // const [showNav, setShowNav] = useState(true);
 
@@ -47,7 +48,6 @@ const Header = ({ enqueueSnackbar }) => {
             setHeader(false);
         }
     };
-
 
     const handleOpenAccount = (e) => {
         setAnchorEl(e.currentTarget);
@@ -83,6 +83,9 @@ const Header = ({ enqueueSnackbar }) => {
             window.removeEventListener('scroll', changeBackgroundHd);
         };
     }, []);
+    useEffect(() => {
+        setPhotoUrl(user.photoUrl);
+    }, [user])
     // useEffect(() => {
     //     const handleDisplayNav = () => {
     //         const currentValue = window.scrollY;
@@ -94,7 +97,7 @@ const Header = ({ enqueueSnackbar }) => {
     //         window.removeEventListener('scroll', handleDisplayNav);
     //     };
     // }, [preValue, showNav]);
-    // console.log(showNav);
+
     return (
         <>
             <header className={header || (pathname !== '/' && pathname !== '/contact' && pathname !== '/about')
@@ -118,9 +121,15 @@ const Header = ({ enqueueSnackbar }) => {
                             <SearchIcon className='searchicon' />
                         </Link>
                         {user.userName ?
-                            <div className="userIcon" onClick={handleOpenAccount}>
-                                <p>{user.userName.charAt(0)}</p>
-                            </div>
+                            (photoUrl ?
+                                <div onClick={handleOpenAccount} className="useravatar">
+                                    <img src={photoUrl} alt="avatar" />
+                                </div>
+                                :
+                                <div className="userIcon" onClick={handleOpenAccount}>
+                                    <p>{user.userName.charAt(0)}</p>
+                                </div>
+                            )
                             :
                             <i onClick={handleClickOpen}>
                                 <PersonIcon className='adminicon' />

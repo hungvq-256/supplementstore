@@ -1,28 +1,16 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import "./style.scss";
 const AccountCategories = () => {
-    const history = useHistory();
-    const [active, setActive] = useState(0);
-    const handleSwitchCategories = (slug, index) => {
-        history.push(`/${slug}`)
-        setActive(index);
-    }
     return (
         <>
             <ul className="usercategories">
-                <li
-                    onClick={() => { handleSwitchCategories("account", 0) }}
-                    className={active === 0 ? "active" : ""}
-                >
+                <NavLink to="/account" activeClassName="active" exact>
                     My Account
-                </li>
-                <li
-                    onClick={() => { handleSwitchCategories("account/purchase-history", 1) }}
-                    className={active === 1 ? "active" : ""}
-                >
+                </NavLink>
+                <NavLink to="/account/purchase-history" activeClassName="active">
                     Purchase History
-                </li>
+                </NavLink>
             </ul>
         </>
     );

@@ -168,6 +168,26 @@ header {
                     color: #ffffff;
                 }
             }
+            .useravatar {
+                width: 35px;
+                padding-top: 35px;
+                position: relative;
+                overflow: hidden;
+                border-radius: 50%;
+                cursor: pointer;
+                box-shadow: 0px 0px 3px 0px rgba(238, 238, 238, 0.75);
+                -webkit-box-shadow: 0px 0px 3px 0px rgba(238, 238, 238, 0.75);
+                -moz-box-shadow: 0px 0px 3px 0px rgba(238, 238, 238, 0.75);
+                img {
+                    min-width: 100%;
+                    min-height: 100%;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    object-fit: cover;
+                }
+            }
             a {
                 .searchicon {
                     color: #ffffff;

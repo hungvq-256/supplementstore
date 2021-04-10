@@ -4,13 +4,18 @@ import { withSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUserInfo } from '../../../../actions/user';
+import UploadAvatar from "../UploadAvatar";
 import './style.scss';
+
 require("firebase/firestore");
 
 let db = firebase.firestore();
 function UserInfo({ enqueueSnackbar }) {
-    const [userInfo, setUserInfo] = useState({});
-    const [inputValue, setInputValue] = useState(userInfo);
+    const [value, setValue] = useState({
+        user: {},
+        input: {}
+    })
+    const { user, input } = value;
     const [edit, setEdit] = useState(false);
     const [loading, setLoading] = useState({
         content: true,
@@ -18,9 +23,12 @@ function UserInfo({ enqueueSnackbar }) {
     });
     const dispatch = useDispatch();
     const handleOnChange = (e) => {
-        setInputValue(prevalue => ({
+        setValue(prevalue => ({
             ...prevalue,
-            [e.target.name]: e.target.value
+            input: {
+                ...input,
+                [e.target.name]: [e.target.value]
+            }
         }))
     }
     const handleEditUserInfo = () => {
@@ -33,12 +41,14 @@ function UserInfo({ enqueueSnackbar }) {
                 btn: true
             }))
             try {
-                await db.collection("users").doc(`${userInfo.userId}`).update(inputValue);
-                let fetchUser = await db.collection("users").doc(`${userInfo.userId}`).get();
-                let user = fetchUser.data();
-                localStorage.setItem("user", JSON.stringify(user));
-                dispatch(updateUserInfo(user));
-                setUserInfo(user);
+                await db.collection("users").doc(`${user.userId}`).update(input);
+                let fetchUser = await db.collection("users").doc(`${user.userId}`).get();
+                localStorage.setItem("user", JSON.stringify(fetchUser.data()));
+                dispatch(updateUserInfo(fetchUser.data()));
+                setValue(prevalue => ({
+                    ...prevalue,
+                    user: fetchUser.data(),
+                }));
                 enqueueSnackbar("Update Info Successful", {
                     variant: "success",
                 });
@@ -56,13 +66,42 @@ function UserInfo({ enqueueSnackbar }) {
         }
         dispatch(pushUserInfoToDatabase());
     }
+    const handleChangeAvatar = (imgUrl) => {
+        if (imgUrl) {
+            (async () => {
+                try {
+                    await db.collection("users").doc(user.userId).update({
+                        photoUrl: imgUrl
+                    });
+                    let fetchUserInfo = await db.collection("users").doc(user.userId).get();
+                    localStorage.setItem("user", JSON.stringify(fetchUserInfo.data()));
+                    setValue({
+                        user: fetchUserInfo.data(),
+                        input: fetchUserInfo.data()
+                    })
+                    dispatch(updateUserInfo(fetchUserInfo.data()));
+                    enqueueSnackbar("Upload avatar successfully", {
+                        variant: "success",
+                    });
+                }
+                catch (error) {
+                    enqueueSnackbar(error.message, {
+                        variant: "warning",
+                    });
+                }
+            })();
+        }
+    }
     useEffect(() => {
         (async () => {
             try {
                 let getIdFromLocalStorage = JSON.parse(localStorage.getItem("user"));
                 let fetchUserInfo = await db.collection("users").doc(`${getIdFromLocalStorage.userId}`).get();
-                setUserInfo(fetchUserInfo.data());
-                setInputValue(fetchUserInfo.data());
+                setValue({
+                    user: fetchUserInfo.data(),
+                    input: fetchUserInfo.data()
+                })
+                dispatch(updateUserInfo(fetchUserInfo.data()));
             }
             catch (error) {
                 enqueueSnackbar(error.message, {
@@ -74,38 +113,46 @@ function UserInfo({ enqueueSnackbar }) {
                 content: false
             }))
         })()
-    }, [enqueueSnackbar]);
-
+    }, [enqueueSnackbar, dispatch]);
     return (
         <div className='userinfowrapper'>
             { loading.content ? <CircularProgress className="loadingpurchasehistory" size={50} style={{ color: "#cccccc" }} /> :
                 <div className="userinfo">
                     <div className="userinfo__avatar">
-                        <p>{userInfo.userName.charAt(0).toUpperCase()}</p>
+                        {user.photoUrl ?
+                            <div className="userinfo__avatar-img">
+                                <img src={user.photoUrl} alt="avatar" />
+                            </div>
+                            :
+                            <div className="userinfo__avatar-text">
+                                <p>{user.userName.charAt(0).toUpperCase()}</p>
+                            </div>
+                        }
+                        <UploadAvatar onChangeAvatar={handleChangeAvatar} />
                     </div>
                     <div className="userinfotextwrapper">
                         <div className="userinfotextbox">
                             <p className="infolabel">Name: </p>
-                            {!edit ? <p>{userInfo.userName}</p> :
-                                <input name="userName" onChange={handleOnChange} type="text" value={inputValue.userName} />
+                            {!edit ? <p>{user.userName}</p> :
+                                <input name="userName" onChange={handleOnChange} type="text" value={input.userName} />
                             }
                         </div>
                         <div className="userinfotextbox">
                             <p className="infolabel">Email: </p>
-                            {!edit ? <p>{userInfo.email}</p> :
-                                <input name="email" onChange={handleOnChange} type="text" value={inputValue.email} />
+                            {!edit ? <p>{user.email}</p> :
+                                <input name="email" onChange={handleOnChange} type="text" value={input.email} />
                             }
                         </div>
                         <div className="userinfotextbox">
                             <p className="infolabel">Phone Number: </p>
-                            {!edit ? <p>{userInfo.phoneNumber}</p> :
-                                <input name="phoneNumber" onChange={handleOnChange} type="text" value={inputValue.phoneNumber || ''} />
+                            {!edit ? <p>{user.phoneNumber}</p> :
+                                <input name="phoneNumber" onChange={handleOnChange} type="text" value={input.phoneNumber || ''} />
                             }
                         </div>
                         <div className="userinfotextbox">
                             <p className="infolabel">Address: </p>
-                            {!edit ? <p>{userInfo.address}</p> :
-                                <input name="address" onChange={handleOnChange} type="text" value={inputValue.address || ''} />
+                            {!edit ? <p>{user.address}</p> :
+                                <input name="address" onChange={handleOnChange} type="text" value={input.address || ''} />
                             }
                         </div>
                     </div>
