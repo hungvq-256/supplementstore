@@ -1,8 +1,7 @@
+import { CircularProgress } from '@material-ui/core';
+import firebase from "firebase/app";
 import React, { useEffect, useState } from 'react';
 import "./style.scss";
-import firebase from "firebase/app";
-import { useSelector } from 'react-redux';
-import { CircularProgress } from '@material-ui/core';
 require("firebase/firestore");
 
 let db = firebase.firestore();
