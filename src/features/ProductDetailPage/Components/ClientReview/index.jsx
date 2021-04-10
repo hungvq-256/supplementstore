@@ -44,6 +44,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         email: userInfo.email,
                         comment: textAreaValue,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
+                        photoUrl: userInfo.photoUrl,
                         date: firebase.firestore.FieldValue.serverTimestamp()
                     })
                     setSubmit(prevalue => ({
@@ -138,9 +139,15 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         (
                             <div className="reviewItem" key={index}>
                                 <div className="reviewItem__avatar">
-                                    <div className="reviewItem__avatar-img">
-                                        <p>{item.userName.split(' ')[0].charAt(0)}</p>
-                                    </div>
+                                    {item.photoUrl ?
+                                        <div className="reviewItem__avatar-img">
+                                            <img src={item.photoUrl} alt="avatar" />
+                                        </div>
+                                        :
+                                        <div className="reviewItem__avatar-text">
+                                            <p>{item.userName.split(' ')[0].charAt(0)}</p>
+                                        </div>
+                                    }
                                 </div>
                                 <div className="reviewItem__textbox">
                                     <div className="userNameWrap">

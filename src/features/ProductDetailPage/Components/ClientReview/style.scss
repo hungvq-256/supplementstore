@@ -18,7 +18,7 @@
                 }
                 &__avatar {
                     margin-right: 15px;
-                    &-img {
+                    &-text {
                         width: 55px;
                         height: 55px;
                         border-radius: 50%;
@@ -39,6 +39,26 @@
                             @media (max-width: 767px) {
                                 font-size: 2em;
                             }
+                        }
+                    }
+                    &-img {
+                        width: 55px;
+                        padding-top: 55px;
+                        border-radius: 50%;
+                        position: relative;
+                        overflow: hidden;
+                        @media (max-width: 767px) {
+                            width: 50px;
+                            padding-top: 50px;
+                        }
+                        img {
+                            min-width: 100%;
+                            min-height: 100%;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            object-fit: cover;
                         }
                     }
                 }
