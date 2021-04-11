@@ -17,6 +17,7 @@ function UserInfo({ enqueueSnackbar }) {
     })
     const { user, input } = value;
     const [edit, setEdit] = useState(false);
+    const [openPopup, setOpenPopup] = useState(false);
     const [loading, setLoading] = useState({
         content: true,
         btn: false
@@ -33,6 +34,9 @@ function UserInfo({ enqueueSnackbar }) {
     }
     const handleEditUserInfo = () => {
         setEdit(true);
+    }
+    const handleTogglePopup = () => {
+        setOpenPopup(!openPopup);
     }
     const handleSaveUserInfo = () => {
         const pushUserInfoToDatabase = () => async dispatch => {
@@ -120,7 +124,7 @@ function UserInfo({ enqueueSnackbar }) {
                 <div className="userinfo">
                     <div className="userinfo__avatar">
                         {user.photoUrl ?
-                            <div className="userinfo__avatar-img">
+                            <div className="userinfo__avatar-img" onClick={handleTogglePopup}>
                                 <img src={user.photoUrl} alt="avatar" />
                             </div>
                             :
@@ -129,6 +133,15 @@ function UserInfo({ enqueueSnackbar }) {
                             </div>
                         }
                         <UploadAvatar onChangeAvatar={handleChangeAvatar} />
+                        <div
+                            className={openPopup ? "userinfo__avatar-popup active" : "userinfo__avatar-popup"}
+                            onClick={handleTogglePopup}
+                        >
+                            <div className="imgwrapper">
+                                <img src={user.photoUrl} alt="avatar popup" />
+                                <div className="close">&#10006;</div>
+                            </div>
+                        </div>
                     </div>
                     <div className="userinfotextwrapper">
                         <div className="userinfotextbox">
@@ -166,6 +179,7 @@ function UserInfo({ enqueueSnackbar }) {
                         </button>}
                 </div>
             }
+            <div className={openPopup ? "modal active" : "modal"}></div>
         </div>
 
     );

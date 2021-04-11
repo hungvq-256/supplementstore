@@ -7,6 +7,7 @@ import { withSnackbar } from 'notistack';
 import { timeSince } from "./timeSince";
 import ReviewWithoutLogin from "./ReviewWithoutLogin";
 import { LinearProgress } from "@material-ui/core";
+import hacker from "../../../../assets/img/hacker.png";
 require("firebase/firestore");
 
 let db = firebase.firestore();
@@ -141,7 +142,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                                 <div className="reviewItem__avatar">
                                     {item.photoUrl ?
                                         <div className="reviewItem__avatar-img">
-                                            <img src={item.photoUrl} alt="avatar" />
+                                            <img src={item.photoUrl} onError={(e) => { e.target.onerror = null; e.target.src = hacker }} alt="avatar" />
                                         </div>
                                         :
                                         <div className="reviewItem__avatar-text">
