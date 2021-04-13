@@ -32,8 +32,6 @@ const ClientReview = ({ enqueueSnackbar }) => {
         let upperFirstLetter = convertToArray.map(word => word.charAt(0).toUpperCase() + word.slice(1));
         return upperFirstLetter.join(' ');
     }
-    var d = new Date();
-
     const handleSubmitReview = (e) => {
         e.preventDefault();
         let d = new Date();
@@ -41,11 +39,10 @@ const ClientReview = ({ enqueueSnackbar }) => {
             (async () => {
                 try {
                     await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).doc().set({
-                        userName: upperCaseFirstLetter(userInfo.userName),
+                        userId: userInfo.userId,
                         email: userInfo.email,
                         comment: textAreaValue,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
-                        photoUrl: userInfo.photoUrl,
                         date: firebase.firestore.FieldValue.serverTimestamp()
                     })
                     setSubmit(prevalue => ({
@@ -87,7 +84,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         email: values.email,
                         comment: values.comment,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
-                        date: firebase.firestore.FieldValue.serverTimestamp()
+                        date: firebase.firestore.FieldValue.serverTimestamp(),
                     })
                     setSubmit(prevalue => ({
                         ...prevalue,
@@ -114,9 +111,23 @@ const ClientReview = ({ enqueueSnackbar }) => {
         }));
         (async () => {
             try {
-                let fetchCollectionReview = await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).get()
-                let result = fetchCollectionReview.docs.map(doc => doc.data());
-                let sortResult = result.sort(function (a, b) {
+                let fetchCollectionReview = await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).get();
+                let listReview = fetchCollectionReview.docs.map(doc => doc.data());
+                let fetchListUsers = await db.collection("users").get();
+                let users = fetchListUsers.docs.map(doc => doc.data());
+
+                let updateUserInfoForReview = listReview.map(review => {
+                    if (!!review.userId) {
+                        let user = users.find(user => user.userId === review.userId);
+                        return {
+                            ...review,
+                            userName: user.userName,
+                            photoUrl: user.photoUrl
+                        }
+                    }
+                    return review
+                })
+                let sortResult = updateUserInfoForReview.sort(function (a, b) {
                     return (b.date.seconds) - (a.date.seconds);
                 });
                 setListReview(sortResult);
@@ -153,7 +164,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
                                 <div className="reviewItem__textbox">
                                     <div className="userNameWrap">
                                         <h3>{item.userName}</h3>
-                                        <p>{timeSince(new Date(Date.now() - (Date.parse(d) - ((item.date.seconds) * 1000))))} ago</p>
+                                        <p>{timeSince(new Date(Date.now() - (Date.parse(new Date()) + 1000 - ((item.date.seconds) * 1000))))} ago</p>
                                     </div>
                                     <p>{item.comment}</p>
                                     <p>{item.createdAt}</p>
@@ -162,19 +173,22 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         )) : <p className="emptytext">Leave the first review for the product</p>}
                     </div>
                 }
-                {!!userInfo.userName ? <div className="textField">
-                    <form onSubmit={handleSubmitReview}>
-                        <textarea
-                            onChange={handleChangeTextArea}
-                            name="review"
-                            value={textAreaValue}
-                        >
-                        </textarea>
-                        <button type="submit" className="sendreviewbtn">Send Review</button>
-                    </form>
-                </div>
+                {!!userInfo.userName
+                    ?
+                    <div className="textField">
+                        <form onSubmit={handleSubmitReview}>
+                            <textarea
+                                onChange={handleChangeTextArea}
+                                name="review"
+                                value={textAreaValue}
+                            >
+                            </textarea>
+                            <button type="submit" className="sendreviewbtn">Send Review</button>
+                        </form>
+                    </div>
                     :
-                    <ReviewWithoutLogin onSubmitReviewWithoutLogin={onSubmitReviewWithoutLogin} />}
+                    <ReviewWithoutLogin onSubmitReviewWithoutLogin={onSubmitReviewWithoutLogin} />
+                }
             </div>
         </div>
     );

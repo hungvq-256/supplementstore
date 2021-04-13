@@ -1,6 +1,6 @@
 const initialState = {
     current: {},
-    setting: {}
+    loadingAvatar: true
 }
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -19,7 +19,14 @@ const userReducer = (state = initialState, action) => {
         case "UPDATE_USERINFO": {
             return {
                 ...state,
-                current: action.payload
+                current: action.payload,
+                loadingAvatar: false
+            }
+        }
+        case "UPDATE_LOADINGAVATAR": {
+            return {
+                ...state,
+                loadingAvatar: action.payload
             }
         }
         case "LOGOUT": {

@@ -2,13 +2,16 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { initialLoadCart } from './actions/cart';
-import { googleSignup } from './actions/user';
+import { updateLoadingAvatar, updateUserInfo } from './actions/user';
 import ScrollToTop from './components/ScrollToTop';
 import AdminPage from './features/AdminPage';
 import CheckoutPage from './features/CheckoutPage';
 import MainPages from './pages';
+import firebase from "firebase/app";
 import './scss/style.scss';
+require("firebase/firestore");
 
+let db = firebase.firestore();
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -18,7 +21,16 @@ function App() {
       dispatch(action);
     }
     if (localStorage.getItem("user") !== null) {
-      dispatch(googleSignup(JSON.parse(localStorage.getItem("user"))))
+      let updateUserFromDatabase = () => async dispatch => {
+        let getUserFormLocalStorage = JSON.parse(localStorage.getItem("user"));
+        let fetchUser = await db.collection("users").doc(`${getUserFormLocalStorage.userId}`).get();
+        localStorage.setItem("user", JSON.stringify(fetchUser.data()));
+        dispatch(updateUserInfo(fetchUser.data()));
+      }
+      dispatch(updateUserFromDatabase());
+    }
+    else {
+      dispatch(updateLoadingAvatar(false));
     }
   }, [dispatch]);
   return (

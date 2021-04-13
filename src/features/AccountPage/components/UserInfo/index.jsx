@@ -28,7 +28,7 @@ function UserInfo({ enqueueSnackbar }) {
             ...prevalue,
             input: {
                 ...input,
-                [e.target.name]: [e.target.value]
+                [e.target.name]: e.target.value
             }
         }))
     }
@@ -139,7 +139,9 @@ function UserInfo({ enqueueSnackbar }) {
                         >
                             <div className="imgwrapper">
                                 <img src={user.photoUrl} alt="avatar popup" />
-                                <div className="close">&#10006;</div>
+                            </div>
+                            <div className="close">
+                                <p>&#10006;</p>
                             </div>
                         </div>
                     </div>

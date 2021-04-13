@@ -16,6 +16,12 @@ export const updateUserInfo = (data) => {
         payload: data
     }
 }
+export const updateLoadingAvatar = (data) => {
+    return {
+        type: "UPDATE_LOADINGAVATAR",
+        payload: data
+    }
+}
 export const logout = () => {
     return {
         type: "LOGOUT"

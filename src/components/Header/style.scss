@@ -167,6 +167,16 @@ header {
                     color: #ffffff;
                 }
             }
+            .loadingavatar {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                background: var(--orange-primary);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
             .useravatar {
                 width: 35px;
                 padding-top: 35px;

@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Typography } from '@material-ui/core';
+import { CircularProgress, Menu, MenuItem, Typography } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
@@ -23,6 +23,7 @@ const Header = ({ enqueueSnackbar }) => {
     // const [showNav, setShowNav] = useState(true);
 
     const user = useSelector(state => state.user.current);
+    const loadingAvatar = useSelector(state => state.user.loadingAvatar);
     const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();
@@ -76,7 +77,7 @@ const Header = ({ enqueueSnackbar }) => {
     const handleDirectToAccount = () => {
         history.push("/account");
         setAnchorEl(null);
-    }
+    };
     useEffect(() => {
         window.addEventListener('scroll', changeBackgroundHd);
         return () => {
@@ -85,7 +86,7 @@ const Header = ({ enqueueSnackbar }) => {
     }, []);
     useEffect(() => {
         setPhotoUrl(user.photoUrl);
-    }, [user])
+    }, [user]);
     // useEffect(() => {
     //     const handleDisplayNav = () => {
     //         const currentValue = window.scrollY;
@@ -120,20 +121,27 @@ const Header = ({ enqueueSnackbar }) => {
                         <Link to='/search'>
                             <SearchIcon className='searchicon' />
                         </Link>
-                        {user.userName ?
-                            (photoUrl ?
-                                <div onClick={handleOpenAccount} className="useravatar">
-                                    <img src={photoUrl} alt="avatar" />
-                                </div>
-                                :
-                                <div className="userIcon" onClick={handleOpenAccount}>
-                                    <p>{user.userName.charAt(0)}</p>
-                                </div>
-                            )
+                        {loadingAvatar ?
+                            <div className="loadingavatar">
+                                <CircularProgress size={18} style={{ color: "#ffffff" }} />
+                            </div>
                             :
-                            <i onClick={handleClickOpen}>
-                                <PersonIcon className='adminicon' />
-                            </i>
+                            (user.userName
+                                ?
+                                (photoUrl ?
+                                    <div onClick={handleOpenAccount} className="useravatar">
+                                        <img src={photoUrl} alt="avatar" />
+                                    </div>
+                                    :
+                                    <div className="userIcon" onClick={handleOpenAccount}>
+                                        <p>{user.userName.charAt(0)}</p>
+                                    </div>
+                                )
+                                :
+                                <i onClick={handleClickOpen}>
+                                    <PersonIcon className='adminicon' />
+                                </i>
+                            )
                         }
                         <i className='carticonwrap'>
                             <Link to="/cart">
