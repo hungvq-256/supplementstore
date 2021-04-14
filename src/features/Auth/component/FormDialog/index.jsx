@@ -1,4 +1,4 @@
-import { Box, IconButton, makeStyles } from '@material-ui/core';
+import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -18,8 +18,11 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     padding: "20px 0 10px",
     fontFamily: "Poppins",
-    cursor: "pointer",
     color: "#4e63d8"
+  },
+  text: {
+    display: "inline-block",
+    cursor: "pointer",
   }
 }))
 
@@ -42,16 +45,20 @@ export default function FormDialog({ open, onReceiveCloseState }) {
           {mode === MODE.signup &&
             <>
               <Register />
-              <Box className={classes.switchText} onClick={() => setMode(MODE.login)}>
-                Already have an account. Login here
-            </Box>
+              <Box className={classes.switchText} >
+                <Typography className={classes.text} onClick={() => setMode(MODE.login)}>
+                  Already have an account ? Login here
+                </Typography>
+              </Box>
             </>
           }
           {mode === MODE.login &&
             <>
               <Login />
-              <Box className={classes.switchText} onClick={() => setMode(MODE.signup)}>
-                Don't have an account. Signup here
+              <Box className={classes.switchText}>
+                <Typography className={classes.text} onClick={() => setMode(MODE.signup)}>
+                  Don't have an account ? Signup here
+                </Typography>
               </Box>
             </>
           }

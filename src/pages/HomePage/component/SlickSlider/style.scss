@@ -183,6 +183,7 @@
         max-width: 400px;
         height: initial;
         display: none;
+        pointer-events: none;
         @media (max-width: 767px) {
             left: 5px;
             max-width: 295px;
@@ -231,6 +232,7 @@
             margin-top: 50px;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            pointer-events: auto;
             a {
                 text-decoration: none;
                 color: #ffffff;

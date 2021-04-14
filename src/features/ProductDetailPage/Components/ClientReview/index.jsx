@@ -38,13 +38,15 @@ const ClientReview = ({ enqueueSnackbar }) => {
         if (userInfo.userName && textAreaValue) {
             (async () => {
                 try {
-                    await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).doc().set({
+                    let ReviewDocRef = db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).doc();
+                    await ReviewDocRef.set({
+                        id: ReviewDocRef.id,
                         userId: userInfo.userId,
                         email: userInfo.email,
                         comment: textAreaValue,
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
                         date: firebase.firestore.FieldValue.serverTimestamp()
-                    })
+                    });
                     setSubmit(prevalue => ({
                         ...prevalue,
                         state: !prevalue.state,
@@ -112,8 +114,8 @@ const ClientReview = ({ enqueueSnackbar }) => {
         (async () => {
             try {
                 let fetchCollectionReview = await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${id}`).get();
-                let listReview = fetchCollectionReview.docs.map(doc => doc.data());
                 let fetchListUsers = await db.collection("users").get();
+                let listReview = fetchCollectionReview.docs.map(doc => doc.data());
                 let users = fetchListUsers.docs.map(doc => doc.data());
 
                 let updateUserInfoForReview = listReview.map(review => {

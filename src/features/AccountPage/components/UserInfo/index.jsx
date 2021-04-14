@@ -137,12 +137,10 @@ function UserInfo({ enqueueSnackbar }) {
                             className={openPopup ? "userinfo__avatar-popup active" : "userinfo__avatar-popup"}
                             onClick={handleTogglePopup}
                         >
-                            <div className="imgwrapper">
+                            <div className={openPopup ? "imgwrapper active" : "imgwrapper"}>
                                 <img src={user.photoUrl} alt="avatar popup" />
                             </div>
-                            <div className="close">
-                                <p>&#10006;</p>
-                            </div>
+                            <div className="close"><p>&#10006;</p></div>
                         </div>
                     </div>
                     <div className="userinfotextwrapper">
@@ -181,7 +179,6 @@ function UserInfo({ enqueueSnackbar }) {
                         </button>}
                 </div>
             }
-            <div className={openPopup ? "modal active" : "modal"}></div>
         </div>
 
     );

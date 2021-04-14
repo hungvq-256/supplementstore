@@ -18,7 +18,6 @@ const Header = ({ enqueueSnackbar }) => {
     const [header, setHeader] = useState(false);
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [photoUrl, setPhotoUrl] = useState(null);
     // const [preValue, setPreValue] = useState(0);
     // const [showNav, setShowNav] = useState(true);
 
@@ -70,9 +69,6 @@ const Header = ({ enqueueSnackbar }) => {
                 variant: "warning",
             });
         });
-        if (history.location.pathname === '/account' || history.location.pathname === '/account/purchase-history') {
-            history.push("/");
-        }
     };
     const handleDirectToAccount = () => {
         history.push("/account");
@@ -84,9 +80,9 @@ const Header = ({ enqueueSnackbar }) => {
             window.removeEventListener('scroll', changeBackgroundHd);
         };
     }, []);
-    useEffect(() => {
-        setPhotoUrl(user.photoUrl);
-    }, [user]);
+    // useEffect(() => {
+    //     setPhotoUrl(user.photoUrl);
+    // }, [user]);
     // useEffect(() => {
     //     const handleDisplayNav = () => {
     //         const currentValue = window.scrollY;
@@ -97,7 +93,6 @@ const Header = ({ enqueueSnackbar }) => {
     //     return () => {
     //         window.removeEventListener('scroll', handleDisplayNav);
     //     };
-    // }, [preValue, showNav]);
 
     return (
         <>
@@ -128,9 +123,9 @@ const Header = ({ enqueueSnackbar }) => {
                             :
                             (user.userName
                                 ?
-                                (photoUrl ?
+                                (user.photoUrl ?
                                     <div onClick={handleOpenAccount} className="useravatar">
-                                        <img src={photoUrl} alt="avatar" />
+                                        <img src={user.photoUrl} alt="avatar" />
                                     </div>
                                     :
                                     <div className="userIcon" onClick={handleOpenAccount}>
@@ -158,7 +153,7 @@ const Header = ({ enqueueSnackbar }) => {
             {!user.userName && <FormDialog open={open} onReceiveCloseState={onReceiveCloseState} />}
             <Menu
                 anchorEl={anchorEl}
-                keepMounted
+                // keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleCloseAccount}
                 anchorOrigin={{

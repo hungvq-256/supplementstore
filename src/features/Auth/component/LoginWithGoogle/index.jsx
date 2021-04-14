@@ -16,7 +16,7 @@ const LoginWithGoogle = ({ enqueueSnackbar }) => {
         (async () => {
             try {
                 let userFromGoogle = await fire.auth().signInWithPopup(provider);
-                let user = userFromGoogle.user
+                let user = userFromGoogle.user;
                 let userFromDatabase = await db.collection("users").doc(user.uid).get();
                 if (userFromDatabase.exists) {
                     let user = userFromDatabase.data();
@@ -48,74 +48,10 @@ const LoginWithGoogle = ({ enqueueSnackbar }) => {
                 });
             }
         })()
-
-
-        // .then((result) => {
-        //     // /** @type {firebase.auth.OAuthCredential} */
-        //     var credential = result.credential;
-        //     // This gives you a Google Access Token. You can use it to access the Google API.
-        //     var token = credential.accessToken;
-        //     var user = result.user;
-        //     // let userInfo = {
-        //     //     userId: user.uid,
-        //     //     userName: user.displayName,
-        //     //     email: user.email,
-        //     //     token: token
-        //     // }
-        //     // localStorage.setItem("user", JSON.stringify(userInfo));
-        //     // dispatch(googleSignup(userInfo));
-        //     // enqueueSnackbar("Login Successful", {
-        //     //     variant: "success",
-        //     // });
-        //     return user;
-        // })
-        // .then((user) => {
-        //     return db.collection("users").doc(user.uid).get();
-        // })
-        // .then((result) => {
-        //     if (result.exists) {
-        //         let user = result.data();
-        //         localStorage.setItem("user", JSON.stringify(user));
-        //         dispatch(googleSignup(user));
-        //         console.log("this account is exists");
-        //     }
-        //     else {
-        //         let userInfo = {
-        //             userId: user.uid,
-        //             userName: user.displayName,
-        //             email: user.email,
-        //             phoneNumber: user.phoneNumber,
-        //             address: null
-        //         }
-        //             (async () => {
-        //                 try {
-        //                     await db.collection("users").doc(user.uid).add(userInfo);
-        //                     localStorage.setItem("user", JSON.stringify(userInfo));
-        //                     dispatch(googleSignup(userInfo));
-        //                     enqueueSnackbar("Login Successful", {
-        //                         variant: "success",
-        //                     });
-        //                 } catch (error) {
-        //                     console.log(error)
-        //                 }
-        //             })()
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.log(error)
-        // });
-        // (async () => {
-        //     try {
-        //         let fetchUserInfo = await db.collection("users").doc(user.uid).get();
-        //         
-        //     catch (error) {
-        //         console.log(error)
-        //     }
-        // })()
     }
     return (
-        <div style={{ padding: "10px 0", cursor: "pointer" }}>
-            <div onClick={onLogin} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ padding: "10px 0", display: "flex", justifyContent: "center" }}>
+            <div onClick={onLogin} style={{ display: "inline-flex", alignItems: "center", cursor: "pointer" }}>
                 <i style={{ display: "flex", width: "20px", marginRight: "5px", alignItems: "center" }}>
                     <img src={googleIcon} alt="google icon" />
                 </i>

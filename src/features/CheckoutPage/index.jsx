@@ -95,7 +95,9 @@ const CheckoutPage = () => {
         setLoading(true);
         (async () => {
             try {
-                await db.collection(`users/${user.userId}/purchareHistory`).doc().set({
+                let purchaseHistory = db.collection(`users/${user.userId}/purchaseHistory`).doc();
+                purchaseHistory.set({
+                    id: purchaseHistory.id,
                     name: clientInfo.userName,
                     phoneNumber: clientInfo.phoneNumber,
                     address: clientInfo.address,

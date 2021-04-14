@@ -25,10 +25,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                background: rgba(0, 0, 0, 0.7);
                 z-index: 1000;
                 opacity: 0;
-                transform: scale(0.6);
-                transition: 0.5s;
+                transition: 0.2s;
                 pointer-events: none;
                 .imgwrapper {
                     width: 100%;
@@ -38,6 +38,10 @@
                     overflow: hidden;
                     z-index: 1;
                     margin: 0 10px;
+                    opacity: 0;
+                    transform: scale(0.6);
+                    transition: 0.5s;
+                    pointer-events: none;
                     img {
                         width: 100%;
                         height: 100%;
@@ -47,11 +51,16 @@
                         transform: translate(-50%, -50%);
                         object-fit: contain;
                     }
+                    &.active {
+                        opacity: 1;
+                        transform: scale(1);
+                        transition: 0.5s;
+                        pointer-events: auto;
+                    }
                 }
                 &.active {
                     opacity: 1;
-                    transform: scale(1);
-                    transition: 0.5s;
+                    transition: 0.2s;
                     pointer-events: auto;
                 }
                 .close {
@@ -59,8 +68,8 @@
                     width: 30px;
                     height: 30px;
                     border-radius: 50%;
-                    right: 15px;
-                    top: 15px;
+                    right: 30px;
+                    top: 30px;
                     font-size: 22px;
                     background: #cccccc;
                     cursor: pointer;
@@ -69,6 +78,7 @@
                     justify-content: center;
                     p {
                         font-size: 18px;
+                        cursor: pointer;
                     }
                 }
             }
@@ -154,20 +164,6 @@
             p {
                 font-size: 1.1rem;
             }
-        }
-    }
-    .modal {
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: rgba(0, 0, 0, 0.7);
-        opacity: 0;
-        pointer-events: none;
-        &.active {
-            opacity: 1;
-            pointer-events: auto;
         }
     }
 }

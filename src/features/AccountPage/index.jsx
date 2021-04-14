@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router';
 import AccountCategories from './components/AccountCategories';
 import PurchaseHistory from './components/PurchaseHistory';
 import UserInfo from './components/UserInfo';
 const AccountPage = () => {
     const loggedIn = localStorage.getItem('user') !== null ? JSON.parse(localStorage.getItem('user')) : {};
-    let isLogin = !!loggedIn.userId;
+    const userFromRedux = useSelector(state => state.user.current);
+    const [isLogin, setIsLogin] = useState(false);
+    useEffect(() => {
+        if (!!userFromRedux.userId) {
+            setIsLogin(true);
+        } else {
+            setIsLogin(false);
+        }
+    }, [userFromRedux]);
     return (
         <div className='container --accountpage' style={{ marginTop: "100px" }}>
             <div className="row">
@@ -15,10 +24,13 @@ const AccountPage = () => {
                 <div className="col-12 col-sm-9 usercontent">
                     <Switch>
                         <Route path="/account/purchase-history">
-                            {isLogin ? <PurchaseHistory /> : <Redirect to="/" />}
+                            {!!loggedIn.userId || isLogin ? <PurchaseHistory /> : <Redirect to="/" />}
                         </Route>
+                        {/* <Route path="/account/product-review">
+                            {!!loggedIn.userId || isLogin ? <ProductReview /> : <Redirect to="/" />}
+                        </Route> */}
                         <Route path="/account">
-                            {isLogin ? <UserInfo /> : <Redirect to="/" />}
+                            {!!loggedIn.userId || isLogin ? <UserInfo /> : <Redirect to="/" />}
                         </Route>
                     </Switch>
                 </div>

@@ -26,11 +26,14 @@
             margin-top: 15px;
         }
         .orderdat {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e1e1e1;
             p {
                 font-size: 1.6em;
                 font-weight: 500;
                 padding: 5px 10px;
-                border-bottom: 1px solid #e1e1e1;
             }
         }
         .orderitem {
