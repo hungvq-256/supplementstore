@@ -1,7 +1,7 @@
 import React from 'react';
-import freeShip from '../../../../assets/img/FreeDelivery.webp';
-import onlineOrder from '../../../../assets/img/OnlineOrder.webp';
-import guarantee from '../../../../assets/img/Guarantee.webp';
+import freeShip from '../../../../assets/img/free-ship.png'
+import onlineOrder from '../../../../assets/img/online-order.png'
+import guarantee from '../../../../assets/img/guarantee.png'
 import "./style.scss"
 
 const benefits = [
