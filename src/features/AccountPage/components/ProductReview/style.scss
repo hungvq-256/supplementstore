@@ -1,0 +1,37 @@
+.listreview {
+    // padding: 15px;
+    // background: #ffffff;
+    // border-radius: 6px;
+    // height: 500px;
+    // overflow: auto;
+    // position: relative;
+    // @media (max-width: 767px) {
+    //     margin-top: 20px;
+    //     padding: 10px;
+    // }
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 80%;
+        margin: 0 auto;
+        padding: 10px 0;
+        border-bottom: 1px solid #e1e1e1;
+        &:first-of-type {
+            padding-top: 0;
+        }
+        .textbox {
+            font-size: 1.6em;
+            p {
+                &:first-of-type {
+                    display: inline-block;
+                    margin-left: 10px;
+                    font-weight: 500;
+                }
+            }
+        }
+        i {
+            cursor: pointer;
+        }
+    }
+}

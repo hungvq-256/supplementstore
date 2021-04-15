@@ -1,0 +1,21 @@
+.usercontent {
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 6px;
+    height: 510px;
+    overflow: auto;
+    position: relative;
+    @media (max-width: 767px) {
+        margin-top: 20px;
+        padding: 10px;
+    }
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #cccccc;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #555555;
+    }
+}

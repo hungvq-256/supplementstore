@@ -11,7 +11,7 @@ import hacker from "../../../../assets/img/hacker.png";
 require("firebase/firestore");
 
 let db = firebase.firestore();
-const ClientReview = ({ enqueueSnackbar }) => {
+const ClientReview = ({ enqueueSnackbar, productInfo }) => {
     const { id } = useParams();
     const [textAreaValue, setTextAreaValue] = useState('');
     const [listReview, setListReview] = useState([]);
@@ -32,6 +32,7 @@ const ClientReview = ({ enqueueSnackbar }) => {
         let upperFirstLetter = convertToArray.map(word => word.charAt(0).toUpperCase() + word.slice(1));
         return upperFirstLetter.join(' ');
     }
+
     const handleSubmitReview = (e) => {
         e.preventDefault();
         let d = new Date();
@@ -47,6 +48,13 @@ const ClientReview = ({ enqueueSnackbar }) => {
                         createdAt: `${numberFormat(d.getMonth() + 1)}/${numberFormat(d.getDate())}/${d.getFullYear()}  at  ${numberFormat(d.getHours())}:${numberFormat(d.getMinutes())}`,
                         date: firebase.firestore.FieldValue.serverTimestamp()
                     });
+                    let userRef = db.collection(`users/${userInfo.userId}/review`).doc(ReviewDocRef.id);
+                    await userRef.set({
+                        id: ReviewDocRef.id,
+                        product: id,
+                        title: productInfo.title,
+                        comment: textAreaValue,
+                    })
                     setSubmit(prevalue => ({
                         ...prevalue,
                         state: !prevalue.state,

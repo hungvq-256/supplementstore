@@ -18,6 +18,7 @@ const ProductDetailPage = () => {
     });
     const { productInfo, relatedProducts } = products;
     let { id, categories } = useParams();
+
     const convertCategoriesSlug = (categories) => {
         return categories.split('-').join(" ");
     }
@@ -49,7 +50,7 @@ const ProductDetailPage = () => {
             <div className="container">
                 <SectionTitle text={'Review Product'} />
             </div>
-            <ClientReview />
+            <ClientReview productInfo={productInfo} />
             <div className="container">
                 <SectionTitle text={'Related Products'} />
             </div>

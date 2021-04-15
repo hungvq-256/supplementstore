@@ -11,9 +11,9 @@ const AccountCategories = () => {
                 <NavLink to="/account/purchase-history" activeClassName="active">
                     Purchase History
                 </NavLink>
-                {/* <NavLink to="/account/product-review" activeClassName="active">
+                <NavLink to="/account/product-review" activeClassName="active">
                     Product Review
-                </NavLink> */}
+                </NavLink>
             </ul>
         </>
     );
