@@ -1,14 +1,5 @@
 .listreview {
-    // padding: 15px;
-    // background: #ffffff;
-    // border-radius: 6px;
-    // height: 500px;
-    // overflow: auto;
-    // position: relative;
-    // @media (max-width: 767px) {
-    //     margin-top: 20px;
-    //     padding: 10px;
-    // }
+    height: 100%;
     &__item {
         display: flex;
         align-items: center;
@@ -34,4 +25,17 @@
             cursor: pointer;
         }
     }
+}
+.emptytextreview {
+    height: 100%;
+    font-size: 1.6em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loadingreview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

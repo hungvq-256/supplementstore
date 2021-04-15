@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import firebase from "firebase/app";
 import DeleteIcon from '@material-ui/icons/Delete';
 import "./style.scss";
+import { CircularProgress } from '@material-ui/core';
 require("firebase/firestore");
 
 let db = firebase.firestore();
 let getIdFromLocalStorage = JSON.parse(localStorage.getItem("user"));
 const ProductReview = () => {
     const [listReview, setListReview] = useState([]);
-
+    const [loading, setLoading] = useState(true);
     const findIndex = (array, id) => {
         let findItem = array.find(item => item.id === id);
         let index = array.indexOf(findItem);
@@ -40,20 +41,33 @@ const ProductReview = () => {
             catch (error) {
                 console.log(error);
             }
+            setLoading(false);
         })();
     }, [])
     return (
         <div className="listreview">
-            {listReview.map((item, index) => (
-                <div className="listreview__item" key={index}>
-                    <div className="textbox">
-                        <span>{index + 1}.</span>
-                        <p>{item.title}</p>
-                        <p>Your review: {item.comment}</p>
-                    </div>
-                    <i><DeleteIcon onClick={() => { handleDeleteReview(item.product, item.id) }} /></i>
+            {loading ?
+                <div className="loadingreview">
+                    <CircularProgress size={50} style={{ color: "#cccccc" }} />
                 </div>
-            ))}
+                :
+                (listReview.length === 0
+                    ?
+                    <p className="emptytextreview">Maybe you have not left any reviews</p>
+                    :
+                    (
+                        listReview.map((item, index) => (
+                            <div className="listreview__item" key={index}>
+                                <div className="textbox">
+                                    <span>{index + 1}.</span>
+                                    <p>{item.title}</p>
+                                    <p>Your review: {item.comment}</p>
+                                </div>
+                                <i><DeleteIcon onClick={() => { handleDeleteReview(item.product, item.id) }} /></i>
+                            </div>
+                        ))
+                    )
+                )}
         </div>
     );
 };

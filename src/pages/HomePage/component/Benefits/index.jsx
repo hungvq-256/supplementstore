@@ -1,38 +1,41 @@
 import React from 'react';
+import freeShip from '../../../../assets/img/FreeDelivery.webp';
+import onlineOrder from '../../../../assets/img/OnlineOrder.webp';
+import guarantee from '../../../../assets/img/Guarantee.webp';
 import "./style.scss"
 
+const benefits = [
+    {
+        img: freeShip,
+        title: "Free Delivery",
+        subTitle: "Free shipping for all orders over $100"
+    },
+    {
+        img: onlineOrder,
+        title: "Online Order",
+        subTitle: "Don’t worry you can order Online by our Site"
+    },
+    {
+        img: guarantee,
+        title: "Guarantee",
+        subTitle: "We guarantee authenticity in all our products"
+    }
+]
 const Benefits = () => {
     return (
         <section className="benefits">
             <div className="container">
-                <div className="benefit">
-                    <div className="benefit__img">
-                        <img src="//cdn.shopify.com/s/files/1/0451/3058/0119/files/Free-Delivery.png?v=1597738178" alt="free ship" />
+                {benefits.map((benefit, index) => (
+                    <div className="benefit" key={index}>
+                        <div className="benefit__img">
+                            <img src={benefit.img} alt={benefit.title} />
+                        </div>
+                        <div className="benefit__text">
+                            <h3>{benefit.title}</h3>
+                            <p>{benefit.subTitle}</p>
+                        </div>
                     </div>
-                    <div className="benefit__text">
-                        <h3>Free Delivery</h3>
-                        <p>Free shipping for all orders over $100</p>
-                    </div>
-                </div>
-                <div className="benefit">
-                    <div className="benefit__img">
-                        <img src="//cdn.shopify.com/s/files/1/0451/3058/0119/files/Online-Order.png?v=1597738197" alt="order online" />
-                    </div>
-                    <div className="benefit__text">
-                        <h3>Online Order</h3>
-                        <p>Don’t worry you can order
-                        Online by our Site</p>
-                    </div>
-                </div>
-                <div className="benefit">
-                    <div className="benefit__img">
-                        <img src="//cdn.shopify.com/s/files/1/0451/3058/0119/files/Freshness.png?v=1597738214 " alt="fresh flower" />
-                    </div>
-                    <div className="benefit__text">
-                        <h3>Guarantee</h3>
-                        <p>We guarantee authenticity in all our products</p>
-                    </div>
-                </div>
+                ))}
             </div>
         </section>
     );
