@@ -64,6 +64,7 @@ function ProductItem(props) {
         let action = addToCart(newItem);
         dispatch(action);
         setAlert(true);
+        setStatusPopup(false);
     }
 
     const handleDisplayQuickView = (id) => {

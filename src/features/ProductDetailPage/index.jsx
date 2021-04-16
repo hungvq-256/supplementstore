@@ -24,20 +24,22 @@ const ProductDetailPage = () => {
     }
     useEffect(() => {
         setLoading(true);
-        (async () => {
-            try {
-                let productItem = await productsApi.get(id);
-                let relatedProducts = await productsApi.getAll({ type: convertCategoriesSlug(categories) });
-                setProducts(prevalue => ({
-                    ...prevalue,
-                    productInfo: productItem,
-                    relatedProducts: relatedProducts
-                }));
-            }
-            catch (error) {
-                console.log(error);
-            }
-            setLoading(false);
+        (() => {
+            let productItem = productsApi.get(id);
+            let relatedProducts = productsApi.getAll({ type: convertCategoriesSlug(categories) });
+
+            Promise.all([productItem, relatedProducts])
+                .then(([productItem, relatedProducts]) => {
+                    setProducts(prevalue => ({
+                        ...prevalue,
+                        productInfo: productItem,
+                        relatedProducts: relatedProducts
+                    }));
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         })()
     }, [id, categories]);
 

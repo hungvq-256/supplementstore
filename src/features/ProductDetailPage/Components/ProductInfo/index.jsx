@@ -101,7 +101,7 @@ function ProductInfo({ productInfo, enqueueSnackbar }) {
                                             {flavor}
                                         </label>
                                         <input
-                                            className="size-checked"
+                                            className="flavor-checked"
                                             id={`flavor-${index}`}
                                             type="radio"
                                             value={flavor}

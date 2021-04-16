@@ -12,18 +12,22 @@ const CartList = () => {
     let roundTotal = total.toFixed(2);
     return (
         <div className="container --cartlist" >
-            <div className={cartList.length === 0 ? "cartwrap hide" : "cartwrap"}>
-                <div className="cartarea">
-                    <CartItem cartList={cartList} />
+            {cartList.length !== 0
+                ?
+                <div className="cartwrap">
+                    <div className="cartarea">
+                        <CartItem cartList={cartList} />
+                    </div>
+                    <div className="cartfooter">
+                        <p>{`Total: $${roundTotal}`}</p>
+                        <Link to="/checkout">Payment</Link>
+                    </div>
                 </div>
-                <div className="cartfooter">
-                    <p>{`Total: $${roundTotal}`}</p>
-                    <Link to="/checkout">Payment</Link>
+                :
+                <div className="emptystatus">
+                    <img src={emptyCart} alt="" />
                 </div>
-            </div>
-            <div className={cartList.length === 0 ? "emptystatus show" : "emptystatus"}>
-                <img src={emptyCart} alt="" />
-            </div>
+            }
         </div>
     );
 };

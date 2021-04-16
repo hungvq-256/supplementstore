@@ -43,10 +43,11 @@ export default class SlickSlider extends React.Component {
         let settings = {
             dots: true,
             infinite: true,
-            speed: 500,
+            speed: 1000,
             slidesToShow: 1,
             slidesToScroll: 1,
             autoplay: true,
+            lazyLoad: true,
             fade: true,
             autoplaySpeed: 3500,
             pauseOnHover: false,

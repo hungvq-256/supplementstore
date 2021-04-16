@@ -53,6 +53,7 @@ const ClientReview = ({ enqueueSnackbar, productInfo }) => {
                         id: ReviewDocRef.id,
                         product: id,
                         title: productInfo.title,
+                        type: productInfo.type,
                         comment: textAreaValue,
                     })
                     setSubmit(prevalue => ({

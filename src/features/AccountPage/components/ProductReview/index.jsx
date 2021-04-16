@@ -3,6 +3,7 @@ import firebase from "firebase/app";
 import DeleteIcon from '@material-ui/icons/Delete';
 import "./style.scss";
 import { CircularProgress } from '@material-ui/core';
+import { useHistory } from 'react-router';
 require("firebase/firestore");
 
 let db = firebase.firestore();
@@ -10,6 +11,7 @@ let getIdFromLocalStorage = JSON.parse(localStorage.getItem("user"));
 const ProductReview = () => {
     const [listReview, setListReview] = useState([]);
     const [loading, setLoading] = useState(true);
+    const history = useHistory();
     const findIndex = (array, id) => {
         let findItem = array.find(item => item.id === id);
         let index = array.indexOf(findItem);
@@ -17,19 +19,25 @@ const ProductReview = () => {
     };
 
     const handleDeleteReview = (productId, documentId) => {
-        (async () => {
-            try {
-                let userId = getIdFromLocalStorage.userId;
-                await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${productId}`).doc(documentId).delete();
-                await db.collection(`/users/${userId}/review`).doc(documentId).delete();
-                listReview.splice(findIndex(listReview, documentId), 1);
-                setListReview([...listReview]);
-            }
-            catch (error) {
-                console.log(error)
-            }
-        })()
+        if (window.confirm("Do you want to delete this review ?")) {
+            (async () => {
+                try {
+                    let userId = getIdFromLocalStorage.userId;
+                    await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${productId}`).doc(documentId).delete();
+                    await db.collection(`/users/${userId}/review`).doc(documentId).delete();
+                    listReview.splice(findIndex(listReview, documentId), 1);
+                    setListReview([...listReview]);
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            })();
+        }
     }
+    const handleDirectToProduct = (productId, type) => {
+        history.push(`/products/${type}/product-${productId}`)
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -60,7 +68,7 @@ const ProductReview = () => {
                             <div className="listreview__item" key={index}>
                                 <div className="textbox">
                                     <span>{index + 1}.</span>
-                                    <p>{item.title}</p>
+                                    <p onClick={() => { handleDirectToProduct(item.product, item.type) }}>{item.title}</p>
                                     <p>Your review: {item.comment}</p>
                                 </div>
                                 <i><DeleteIcon onClick={() => { handleDeleteReview(item.product, item.id) }} /></i>

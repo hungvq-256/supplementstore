@@ -52,7 +52,7 @@
         width: 2px;
         height: 100px;
         background: #333333;
-        @media (max-width: 767px) {
+        @media (max-width: 991px) {
             bottom: 50px;
         }
         &:before {
@@ -221,6 +221,10 @@
             @media (max-width: 767px) {
                 font-size: 1.7em;
                 line-height: 37px;
+            }
+            @media (max-width: 375px) {
+                font-size: 1.5em;
+                line-height: 35px;
             }
         }
         button {

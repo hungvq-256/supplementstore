@@ -35,7 +35,7 @@ const PurchaseHistory = () => {
 
     const handleDeletePurchaseHistory = (id) => {
         const user = JSON.parse(localStorage.getItem("user"));
-        if (window.confirm("Do you want to delete this purchased order")) {
+        if (window.confirm("Do you want to delete this purchased order ?")) {
             db.collection(`/users/${user.userId}/purchaseHistory`).doc(id).delete().then(() => {
                 purchasedList.splice(findIndex(purchasedList, id), 1);
                 setPurchasedList([...purchasedList]);

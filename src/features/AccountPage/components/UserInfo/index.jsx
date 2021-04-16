@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { updateUserInfo } from '../../../../actions/user';
 import UploadAvatar from "../UploadAvatar";
 import './style.scss';
-
 require("firebase/firestore");
 
 let db = firebase.firestore();
@@ -116,7 +115,7 @@ function UserInfo({ enqueueSnackbar }) {
                 ...prevalue,
                 content: false
             }))
-        })()
+        })();
     }, [enqueueSnackbar, dispatch]);
     return (
         <div className='userinfowrapper'>

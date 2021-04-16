@@ -19,8 +19,10 @@ function CartItem(props) {
     const dispatch = useDispatch();
 
     const handleRemoveItem = (index) => {
-        const action = removeItem(index);
-        dispatch(action);
+        if (window.confirm("Do you want to delete this item ?")) {
+            const action = removeItem(index);
+            dispatch(action);
+        }
     };
 
     const handleUpdateItem = (arraydata) => {
