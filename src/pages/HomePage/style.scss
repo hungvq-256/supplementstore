@@ -31,14 +31,13 @@
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);
-                font-size: 3.5em;
-                font-family: "Poppins", sans-serif;
+                font-size: 2.8em;
                 font-weight: 600;
-                line-height: 50px;
+                line-height: 38px;
                 color: #ffffff;
                 @media (max-width: 767px) {
-                    font-size: 2.5em;
-                    line-height: 35px;
+                    font-size: 2em;
+                    line-height: 30px;
                 }
             }
         }

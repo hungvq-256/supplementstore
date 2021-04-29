@@ -122,7 +122,8 @@ function UserInfo({ enqueueSnackbar }) {
             { loading.content ? <CircularProgress className="loadingpurchasehistory" size={50} style={{ color: "#cccccc" }} /> :
                 <div className="userinfo">
                     <div className="userinfo__avatar">
-                        {user.photoUrl ?
+                        {user.photoUrl
+                            ?
                             <div className="userinfo__avatar-img" onClick={handleTogglePopup}>
                                 <img src={user.photoUrl} alt="avatar" />
                             </div>

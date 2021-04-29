@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import swal from 'sweetalert2';
-import { withSwalInstance } from 'sweetalert2-react';
+import SweetAlert from 'sweetalert2-react';
 import { addToCart } from '../../actions/cart';
 import QuickView from './component/QuickView';
 import './style.scss';
-
-const SweetAlert = withSwalInstance(swal);
 
 ProductItem.propTypes = {
     listProduct: PropTypes.array,
@@ -73,8 +70,14 @@ function ProductItem(props) {
         setShowQuickView(true);
     }
 
-    const handleCloseQuickView = () => {
-        setShowQuickView(false);
+    const handleCloseQuickView = (addToCart) => {
+        if (addToCart) {
+            setAlert(true);
+            setShowQuickView(false);
+        }
+        else {
+            setShowQuickView(false);
+        }
     }
     const generateInitialPrice = (price, salePercent) => {
         let initialPrice = (Number(price) * 100) / (100 - Number(salePercent));
@@ -162,6 +165,7 @@ function ProductItem(props) {
                 show={alert}
                 title="Successfully add to cart"
                 text="Thanks a lot !!!"
+                icon="success"
                 onConfirm={() => setAlert(false)}
             />
         </>

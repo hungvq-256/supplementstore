@@ -55,7 +55,7 @@ const LoginWithGoogle = ({ enqueueSnackbar }) => {
                 <i style={{ display: "flex", width: "20px", marginRight: "5px", alignItems: "center" }}>
                     <img src={googleIcon} alt="google icon" />
                 </i>
-                <p style={{ fontFamily: "Poppins" }}>Login with Google</p>
+                <p style={{ fontFamily: "Poppins" }}>Log in with Google</p>
             </div>
         </div>
     );

@@ -47,7 +47,7 @@ export default function FormDialog({ open, onReceiveCloseState }) {
               <Register />
               <Box className={classes.switchText} >
                 <Typography className={classes.text} onClick={() => setMode(MODE.login)}>
-                  Already have an account ? Login here
+                  Already have an account? Log in here
                 </Typography>
               </Box>
             </>
@@ -57,7 +57,7 @@ export default function FormDialog({ open, onReceiveCloseState }) {
               <Login />
               <Box className={classes.switchText}>
                 <Typography className={classes.text} onClick={() => setMode(MODE.signup)}>
-                  Don't have an account ? Signup here
+                  Don't have an account? Sign up here
                 </Typography>
               </Box>
             </>

@@ -38,7 +38,7 @@ const ProductDetailPage = () => {
                     setLoading(false);
                 })
                 .catch(error => {
-                    console.log(error)
+                    console.error(error)
                 })
         })()
     }, [id, categories]);

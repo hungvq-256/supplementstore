@@ -156,43 +156,27 @@
                     }
                 }
                 .quantityfield {
-                    border: 0.9px solid #acacac;
+                    border: 0.5px solid #acacac;
                     border-radius: 5px;
                     margin-right: 10px;
                     height: 32px;
                     overflow: hidden;
                     display: flex;
                     align-items: center;
-                    .--btnctrl {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border-radius: initial;
-                        font-size: 2em;
-                        width: 30px;
-                        background: #acacac;
-                        border: none;
-                        outline: none;
-                        height: 100%;
-                        text-align: center;
-                        padding: 0;
-                        cursor: pointer;
-                        -webkit-tap-highlight-color: transparent;
-                    }
-                    input {
-                        height: 28px;
-                        width: 50px;
-                        font-size: 1.7em;
-                        text-align: center;
-                        border: none;
-                        outline: none;
-                        padding: 0;
-                        &::-webkit-outer-spin-button,
-                        &::-webkit-inner-spin-button {
-                            -webkit-appearance: none;
-                            margin: 0;
-                        }
-                    }
+                    // input {
+                    //     height: 28px;
+                    //     width: 50px;
+                    //     font-size: 1.7em;
+                    //     text-align: center;
+                    //     border: none;
+                    //     outline: none;
+                    //     padding: 0;
+                    //     &::-webkit-outer-spin-button,
+                    //     &::-webkit-inner-spin-button {
+                    //         -webkit-appearance: none;
+                    //         margin: 0;
+                    //     }
+                    // }
                 }
             }
         }

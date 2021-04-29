@@ -107,20 +107,20 @@ const ProductsPage = () => {
                 page: 1
             });
         }
-    }
+    };
     const handleRangePrice = (rangeValue) => {
         handlePushQueryToUrl({
             ...queryParsed,
             gtePrice: rangeValue[0],
             ltePrice: rangeValue[1]
         })
-    }
+    };
     useEffect(() => {
         history.push({
             pathname: "/products",
             search: queryString.stringify(initialQuery)
         })
-    }, [history, initialQuery])
+    }, [history, initialQuery]);
 
     useEffect(() => {
         setProducts(prevalue => ({
@@ -134,11 +134,13 @@ const ProductsPage = () => {
                 return filterProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
             }
             return filterProducts;
-        }
+        };
+
         const handlefilterByRangePrice = (products) => {
             return products.filter(product => (Number(product.price) >= Number(queryParsed.gtePrice) &&
                 Number(product.price) <= Number(queryParsed.ltePrice)) === true)
-        }
+        };
+
         (async () => {
             try {
                 let filterProducts = await productsApi.getAll(queryParsed);
@@ -167,7 +169,7 @@ const ProductsPage = () => {
                 }
             }
             catch (error) {
-                console.log(error);
+                console.error(error);
             }
         })()
     }, [queryParsed]);
@@ -187,7 +189,7 @@ const ProductsPage = () => {
                 </div>
                 <div ref={productsRef} className="col-12 col-lg-10" style={{ minHeight: "500px" }}>
                     {loading ? <ProductItemSkeleton /> :
-                        (listProduct.length !== 0
+                        (listProduct.length
                             ?
                             <div className="row --productspage">
                                 <ProductItem listProduct={listProduct} />

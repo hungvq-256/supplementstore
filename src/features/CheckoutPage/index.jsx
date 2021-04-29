@@ -62,11 +62,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
+let db = firebase.firestore();
+
 const CheckoutPage = () => {
-    let db = firebase.firestore();
     const user = useSelector(state => state.user.current);
-    let orderList = useSelector(state => state.cart.cartList);
-    let total = useSelector(state => state.cart.totalPrice);
+    const orderList = useSelector(state => state.cart.cartList);
+    const total = useSelector(state => state.cart.totalPrice);
     const classes = useStyles();
     const [clientInfo, setClientInfo] = useState(user);
     const [orderSummary, setOrderSummary] = useState(false);
@@ -111,10 +112,10 @@ const CheckoutPage = () => {
                 localStorage.removeItem("cart");
             }
             catch (error) {
-                console.log(error.message);
+                console.error(error.message);
             }
             setLoading(false);
-        })()
+        })();
     }
 
     const firstUpperLetter = (string) => {

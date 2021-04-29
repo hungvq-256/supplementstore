@@ -5,16 +5,18 @@
     }
     .container {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-between;
         @media (max-width: 767px) {
             flex-wrap: wrap;
         }
         .benefit {
-            padding: 0 20px;
+            flex: 0 0 30%;
             @media (max-width: 767px) {
                 display: flex;
                 align-items: center;
                 width: 100%;
+                flex: initial;
+                padding: 0 20px;
             }
             &__img {
                 width: 100%;

@@ -28,11 +28,12 @@
     }
 }
 .emptytextreview {
-    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 1.6em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
 }
 .loadingreview {
     position: absolute;

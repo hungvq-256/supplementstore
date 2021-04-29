@@ -19,7 +19,7 @@ const AccountPage = () => {
         }
     }, [userFromRedux]);
     return (
-        <div className='container --accountpage' style={{ marginTop: "100px" }}>
+        <div className='container --accountpage'>
             <div className="row">
                 <div className="col-12 col-sm-3 accountcategories">
                     <AccountCategories />

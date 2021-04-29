@@ -18,6 +18,7 @@ const Header = ({ enqueueSnackbar }) => {
     const [header, setHeader] = useState(false);
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const autoActiveHeaderPage = ['/', '/contact', '/about'];
     // const [preValue, setPreValue] = useState(0);
     // const [showNav, setShowNav] = useState(true);
 
@@ -96,8 +97,7 @@ const Header = ({ enqueueSnackbar }) => {
 
     return (
         <>
-            <header className={header || (pathname !== '/' && pathname !== '/contact' && pathname !== '/about')
-                ? 'active' : ''}>
+            <header className={header || !autoActiveHeaderPage.includes(pathname) ? 'active' : ''}>
                 <div className="container">
                     <div className="left">
                         <div className="logo">

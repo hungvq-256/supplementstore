@@ -1,17 +1,13 @@
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from "react-router";
 import { Link } from 'react-router-dom';
-import swal from 'sweetalert2';
-import { withSwalInstance } from 'sweetalert2-react';
 import { addToCart } from '../../../../actions/cart';
-import { withSnackbar } from 'notistack';
 import "./style.scss";
-
-const SweetAlert = withSwalInstance(swal);
 
 QuickView.propTypes = {
     productInfo: PropTypes.object,
@@ -25,7 +21,6 @@ function QuickView({ productInfo, onReceiveCloseQuickView, enqueueSnackbar }) {
     const [quantity, setQuantity] = useState(1);
     const [flavorValue, setFlavorValue] = useState(flavors[0]);
     const [active, setActive] = useState(0);
-    const [alert, setAlert] = useState(false);
     let dispatch = useDispatch();
     let { id } = useParams();
 
@@ -48,14 +43,15 @@ function QuickView({ productInfo, onReceiveCloseQuickView, enqueueSnackbar }) {
             flavorChoosed: (productInfo.type !== 'fat burner' && productInfo.type !== 'vitamin') ? flavorValue : ''
         }
         let action = addToCart(newItem);
-        if (quantity !== 0) {
+        if (quantity) {
             dispatch(action);
-            setAlert(true);
+            onReceiveCloseQuickView(true);
         } else {
             enqueueSnackbar("Please choose quantity of product", {
                 variant: "warning"
             });
         }
+
     }
     const handleCloseQuickView = () => {
         onReceiveCloseQuickView();
@@ -107,18 +103,18 @@ function QuickView({ productInfo, onReceiveCloseQuickView, enqueueSnackbar }) {
                         }
                         < div className="btn" >
                             <div className="quantityfield">
-                                <button onClick={() => { handleQuantity(-1) }} className="quantityfield__decreasement --btnctrl">
+                                <div onClick={() => { handleQuantity(-1) }} className="quantityfield__decreasement --btnctrl">
                                     <RemoveIcon style={{ fontSize: "14px" }} />
-                                </button>
+                                </div>
                                 <input type="number"
                                     name="clicks"
                                     value={quantity === 0 ? '' : quantity}
                                     onChange={e => {
                                         setQuantity(Number(e.target.value));
                                     }} />
-                                <button onClick={() => { handleQuantity(1) }} className="quantityfield__increasement --btnctrl">
+                                <div onClick={() => { handleQuantity(1) }} className="quantityfield__increasement --btnctrl">
                                     <AddIcon style={{ fontSize: "16px" }} />
-                                </button>
+                                </div>
                             </div>
                             <div className="buttonwrap">
                                 <button onClick={handleAddToCart} className="btn__addtocart">Add To Cart</button>
@@ -130,14 +126,6 @@ function QuickView({ productInfo, onReceiveCloseQuickView, enqueueSnackbar }) {
                     </div>
                     <div className="close" onClick={handleCloseQuickView}>&#10006;</div>
                 </div>
-
-                <SweetAlert
-                    show={alert}
-                    title="Successfully add to cart"
-                    text="Thanks a lot !!!"
-                    icon='warning'
-                    onConfirm={() => setAlert(false)}
-                />
             </div>
             <div className="modal" onClick={handleCloseQuickView}></div>
         </>

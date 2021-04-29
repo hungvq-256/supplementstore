@@ -29,7 +29,7 @@ const AdminPage = () => {
         <div className="container">
             <Switch>
                 <Route path='/admin' exact>
-                    {isLogin ? <ProductsAdminPage /> : <Redirect to="/" />}
+                    {(isLogin && loggedIn.userId === "mykfAVBMN0cWt7udAj6jVyUNLuO2") ? <ProductsAdminPage /> : <Redirect to="/" />}
                 </Route>
                 <Route path='/admin/edit/product-:id' component={ActionAdmin}></Route>
                 <Route path='/admin/add-new-product' component={ActionAdmin}></Route>

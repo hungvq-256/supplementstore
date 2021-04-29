@@ -9,6 +9,7 @@ import Loading from '../components/Loading';
 import HomePage from './HomePage';
 import BackToTopBtn from './HomePage/component/BackToTopBtn';
 import ProductDetailPage from '../features/ProductDetailPage';
+import NotFoundPage from './NotFoundPage';
 // import AccountPage from '../features/AccountPage';
 // import CartPage from '../features/CartPage';
 // import ProductsPage from '../features/ProductsPage';
@@ -55,7 +56,7 @@ const MainPages = () => {
                     <Route path='/contact' component={ContactPage}></Route>
                     <Route path='/about' component={AboutPage}></Route>
                     <Route path='/account' component={AccountPage}></Route>
-                    <Route component={AboutPage}></Route>
+                    <Route component={NotFoundPage}></Route>
                 </Switch>
             </Suspense>
             <BackToTopBtn />

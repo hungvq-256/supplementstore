@@ -43,11 +43,10 @@ export default class SlickSlider extends React.Component {
         let settings = {
             dots: true,
             infinite: true,
-            speed: 1000,
+            speed: 280,
             slidesToShow: 1,
             slidesToScroll: 1,
             autoplay: true,
-            lazyLoad: true,
             fade: true,
             autoplaySpeed: 3500,
             pauseOnHover: false,
@@ -58,7 +57,7 @@ export default class SlickSlider extends React.Component {
         let textbox = textlist.map((item, index) => (
             <div className="textbox" key={index} >
                 <h2>{item}</h2>
-                <button><Link to='/products'>Shop Now</Link></button>
+                <div className="shopnowbtn"><Link to='/products'>Shop Now</Link></div>
             </div>
         ))
         return (

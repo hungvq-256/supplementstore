@@ -64,7 +64,7 @@ const RegisterForm = (props) => {
                 <LockOutlined></LockOutlined>
             </Avatar>
             <Typography component="h3" variant="h5" className={classes.title}>
-                Sign Up
+                SIGN UP
             </Typography>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <InputField name="fullName" label="Full Name" form={form} fullWidth />

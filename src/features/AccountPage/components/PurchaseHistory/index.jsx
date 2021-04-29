@@ -6,11 +6,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 require("firebase/firestore");
 
 let db = firebase.firestore();
+const user = JSON.parse(localStorage.getItem("user"));
+
 const PurchaseHistory = () => {
     const [purchasedList, setPurchasedList] = useState([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"));
         setLoading(true);
         (async () => {
             try {
@@ -19,10 +20,10 @@ const PurchaseHistory = () => {
                 let sortOrderPurchase = result.sort(function (a, b) {
                     return (b.date.seconds) - (a.date.seconds);
                 });
-                setPurchasedList(sortOrderPurchase)
+                setPurchasedList(sortOrderPurchase);
             }
             catch (error) {
-                console.log(error);
+                console.error(error);
             }
             setLoading(false);
         })();
@@ -30,11 +31,12 @@ const PurchaseHistory = () => {
     const findIndex = (array, id) => {
         let findItem = array.find((item, idx) => item.id === id);
         let index = array.indexOf(findItem);
-        return index;
+        if (index >= 0) {
+            return index;
+        }
     };
 
     const handleDeletePurchaseHistory = (id) => {
-        const user = JSON.parse(localStorage.getItem("user"));
         if (window.confirm("Do you want to delete this purchased order ?")) {
             db.collection(`/users/${user.userId}/purchaseHistory`).doc(id).delete().then(() => {
                 purchasedList.splice(findIndex(purchasedList, id), 1);
@@ -48,7 +50,8 @@ const PurchaseHistory = () => {
     return (
         <div className="purchaseHistoryWrapper">
             {loading ? <CircularProgress className="loadingpurchasehistory" size={50} style={{ color: "#cccccc" }} />
-                : (purchasedList.length !== 0 ?
+                : (purchasedList.length
+                    ?
                     purchasedList.map((item, index) => (
                         <div className="purchasehistory" key={index}>
                             <div className="orderdat">

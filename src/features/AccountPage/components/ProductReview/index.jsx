@@ -12,26 +12,26 @@ const ProductReview = () => {
     const [listReview, setListReview] = useState([]);
     const [loading, setLoading] = useState(true);
     const history = useHistory();
+
     const findIndex = (array, id) => {
         let findItem = array.find(item => item.id === id);
         let index = array.indexOf(findItem);
-        return index;
+        if (index >= 0) {
+            return index;
+        }
     };
 
     const handleDeleteReview = (productId, documentId) => {
         if (window.confirm("Do you want to delete this review ?")) {
-            (async () => {
-                try {
-                    let userId = getIdFromLocalStorage.userId;
-                    await db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${productId}`).doc(documentId).delete();
-                    await db.collection(`/users/${userId}/review`).doc(documentId).delete();
+            let userId = getIdFromLocalStorage.userId;
+            let deleteReview = db.collection(`/ClientReview/uMXLd65LBex20ScoUzqg/product-${productId}`).doc(documentId).delete();
+            let deleteUserReview = db.collection(`/users/${userId}/review`).doc(documentId).delete();
+            Promise.all([deleteReview, deleteUserReview])
+                .then(() => {
                     listReview.splice(findIndex(listReview, documentId), 1);
                     setListReview([...listReview]);
-                }
-                catch (error) {
-                    console.log(error)
-                }
-            })();
+                })
+                .catch(error => console.error(error));
         }
     }
     const handleDirectToProduct = (productId, type) => {
@@ -51,7 +51,7 @@ const ProductReview = () => {
             }
             setLoading(false);
         })();
-    }, [])
+    }, []);
     return (
         <div className="listreview">
             {loading ?
@@ -59,7 +59,7 @@ const ProductReview = () => {
                     <CircularProgress size={50} style={{ color: "#cccccc" }} />
                 </div>
                 :
-                (listReview.length === 0
+                (!listReview.length
                     ?
                     <p className="emptytextreview">Maybe you have not left any reviews</p>
                     :

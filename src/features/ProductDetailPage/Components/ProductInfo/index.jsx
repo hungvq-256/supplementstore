@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from "react-router";
-import swal from 'sweetalert2';
-import { withSwalInstance } from 'sweetalert2-react';
+// import swal from 'sweetalert2';
+import SweetAlert from 'sweetalert2-react';
+// import { withSwalInstance } from 'sweetalert2-react';
 import { addToCart } from '../../../../actions/cart';
 import "./style.scss";
 
-const SweetAlert = withSwalInstance(swal);
+// const SweetAlert = withSwalInstance(swal);
 
 ProductInfo.propTypes = {
     productInfo: PropTypes.object,

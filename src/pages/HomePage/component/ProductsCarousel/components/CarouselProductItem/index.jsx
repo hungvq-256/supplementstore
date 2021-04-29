@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import swal from 'sweetalert2';
-import { withSwalInstance } from 'sweetalert2-react';
+import SweetAlert from 'sweetalert2-react';
 import { addToCart } from '../../../../../../actions/cart';
 import QuickView from '../../../../../../components/ProductItem/component/QuickView';
 import Slider from "react-slick";
 import './style.scss';
-
-const SweetAlert = withSwalInstance(swal);
 
 CarouselProductItem.propTypes = {
     listProduct: PropTypes.array,
