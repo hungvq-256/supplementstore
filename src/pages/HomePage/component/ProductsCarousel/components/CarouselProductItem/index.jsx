@@ -2,11 +2,11 @@ import VisibilitySharpIcon from '@material-ui/icons/VisibilitySharp';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import Slider from "react-slick";
 import SweetAlert from 'sweetalert2-react';
 import { addToCart } from '../../../../../../actions/cart';
 import QuickView from '../../../../../../components/ProductItem/component/QuickView';
-import Slider from "react-slick";
 import './style.scss';
 
 CarouselProductItem.propTypes = {
@@ -79,7 +79,7 @@ function CarouselProductItem(props) {
         return initialPrice % 1 !== 0 ? initialPrice.toFixed(2) : `${initialPrice}.00`
     }
     const handleDirectToProduct = (type, id) => {
-        history.push(`products/${type}/product-${id}`)
+        history.push(`products/${(type).split(' ').join('-')}/product-${id}`)
     }
     const products = listProduct.map((item) => (
         <div className="carouselProductItem" key={item.id}>
@@ -88,9 +88,9 @@ function CarouselProductItem(props) {
                     <div className="productitem__img" style={{ backgroundImage: `url(${item.img})` }}></div>
                 </div>
                 <div className="productitem__textbox">
-                    <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`} title={item.title}>
+                    <div onClick={() => { handleDirectToProduct(item.type, item.id) }}>
                         <h3>{item.title}</h3>
-                    </Link>
+                    </div>
                     <div className="pricegroup">
                         <p>{`$${Number(item.price) % 1 !== 0 ? (item.price).toFixed(2) : `${item.price}.00`}`}</p>
                         {item.isSale && <p className="oldprice">${generateInitialPrice(item.price, item.salePercent)}</p>}

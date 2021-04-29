@@ -2,7 +2,7 @@ import VisibilitySharpIcon from '@material-ui/icons/VisibilitySharp';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SweetAlert from 'sweetalert2-react';
 import { addToCart } from '../../actions/cart';
 import QuickView from './component/QuickView';
@@ -24,6 +24,7 @@ function ProductItem(props) {
     const { listProduct, column, newTag } = props;
     const dispatch = useDispatch();
     // const location = useLocation(); //get current url location.pathname
+    const history = useHistory();
     const [statusPopup, setStatusPopup] = useState(false);
     const [showQuickView, setShowQuickView] = useState(false);
     const [productPopup, setProductPopup] = useState({});
@@ -79,6 +80,9 @@ function ProductItem(props) {
             setShowQuickView(false);
         }
     }
+    const handleGoToProductDetailPage = (type, id) => {
+        history.push(`/products/${(type).split(' ').join('-')}/product-${id}`)
+    }
     const generateInitialPrice = (price, salePercent) => {
         let initialPrice = (Number(price) * 100) / (100 - Number(salePercent));
         return initialPrice % 1 !== 0 ? initialPrice.toFixed(2) : `${initialPrice}.00`
@@ -87,13 +91,13 @@ function ProductItem(props) {
     const products = listProduct.map((item) => (
         <div className={`col-${column} col-xxs col-sm-4 col-lg-3`} key={item.id}>
             <div className="productitem">
-                <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`}>
+                <div onClick={() => { handleGoToProductDetailPage(item.type, item.id) }}>
                     <div className="productitem__img" style={{ backgroundImage: `url(${item.img})` }}></div>
-                </Link>
+                </div>
                 <div className="productitem__textbox">
-                    <Link to={`/products/${(item.type).split(' ').join('-')}/product-${item.id}`} title={item.title}>
+                    <div onClick={() => { handleGoToProductDetailPage(item.type, item.id) }}>
                         <h3>{item.title}</h3>
-                    </Link>
+                    </div>
                     <div className="pricegroup">
                         <p>{`$${Number(item.price) % 1 !== 0 ? (item.price).toFixed(2) : `${item.price}.00`}`}</p>
                         {item.isSale && <p className="oldprice">${generateInitialPrice(item.price, item.salePercent)}</p>}

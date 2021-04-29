@@ -2,15 +2,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Avatar, Button, CircularProgress, makeStyles, Typography } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import firebase from "firebase/app";
+import { withSnackbar } from 'notistack';
 // import PropTypes from "prop-types";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
+import { requestSignupAction } from "../../../../actions/user";
 import InputField from '../../../../components/form-control/InputField';
 import PasswordField from '../../../../components/form-control/PasswordField';
-import { withSnackbar } from 'notistack';
-import { requestSignupAction } from "../../../../actions/user";
 require("firebase/firestore");
 
 const useStyles = makeStyles((theme) => ({

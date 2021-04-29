@@ -13,7 +13,7 @@
     background: #ffffff;
     scroll-snap-align: center;
     position: relative;
-    a {
+    div {
         display: block;
         overflow: hidden;
         -webkit-tap-highlight-color: transparent;
@@ -34,11 +34,9 @@
     }
     &__textbox {
         padding-top: 5px;
-        a {
+        div {
             -webkit-tap-highlight-color: transparent;
-            display: block;
             height: 37px;
-            text-decoration: none;
             @media (max-width: 767px) {
                 height: 37px;
             }
