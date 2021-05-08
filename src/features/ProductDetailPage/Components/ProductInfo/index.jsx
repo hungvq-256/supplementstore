@@ -5,13 +5,9 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from "react-router";
-// import swal from 'sweetalert2';
 import SweetAlert from 'sweetalert2-react';
-// import { withSwalInstance } from 'sweetalert2-react';
 import { addToCart } from '../../../../actions/cart';
 import "./style.scss";
-
-// const SweetAlert = withSwalInstance(swal);
 
 ProductInfo.propTypes = {
     productInfo: PropTypes.object,
@@ -84,7 +80,7 @@ function ProductInfo({ productInfo, enqueueSnackbar }) {
                     <img src={productInfo.img} alt="" />
                 </div>
                 <div className="textbox col-12 col-sm-8">
-                    <p>{`$${productInfo.price % 1 !== 0 ? productInfo.price : `${productInfo.price}.00`}`}</p>
+                    <p>{`$${productInfo.price % 1 !== 0 ? (productInfo.price).toFixed(2) : `${productInfo.price}.00`}`}</p>
                     <p className="description">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                     Incidunt et ad inventore quam fugit amet, blanditiis, vero expedita obcaecati nostrum eaque,
                         nobis enim excepturi vitae repellendus ipsum eveniet iste quos!</p>

@@ -75,6 +75,17 @@ const Header = ({ enqueueSnackbar }) => {
         history.push("/account");
         setAnchorEl(null);
     };
+    const handleClickLogo = () => {
+        if (history.location.pathname === "/") {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        } else {
+            history.push("/");
+        }
+    };
+
     useEffect(() => {
         window.addEventListener('scroll', changeBackgroundHd);
         return () => {
@@ -100,12 +111,12 @@ const Header = ({ enqueueSnackbar }) => {
             <header className={header || !autoActiveHeaderPage.includes(pathname) ? 'active' : ''}>
                 <div className="container">
                     <div className="left">
-                        <div className="logo">
-                            <Link to='/'><i><img src={Supplement} alt='supplement logo' /></i></Link>
+                        <div className="logo" onClick={handleClickLogo}>
+                            <i><img src={Supplement} alt='supplement logo' /></i>
                         </div>
                         <div className="nav">
                             <ul className={isClose ? "nav__list" : "nav__list active"}>
-                                <NavLink activeClassName='active' to={`/products`}><li>Products</li></NavLink>
+                                <NavLink activeClassName='active' to={`/products`} exact><li>Products</li></NavLink>
                                 <NavLink activeClassName='active' to='/about'><li> About</li></NavLink>
                                 <NavLink activeClassName='active' to='/contact'><li>Contact</li></NavLink>
                             </ul>

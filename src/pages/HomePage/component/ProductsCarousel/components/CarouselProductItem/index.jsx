@@ -102,7 +102,7 @@ function CarouselProductItem(props) {
                         <i onClick={() => handleDisplayQuickView(item.id)}><VisibilitySharpIcon /></i>
                     </div>
                 </div>
-                <div className="newtag">-{item.salePercent}%</div>
+                <div className="producttag">-{item.salePercent}%</div>
             </div>
         </div>
     ));

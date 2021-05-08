@@ -77,6 +77,7 @@ function CheckoutForm(props) {
     const handleSubmit = (values) => {
         onNext(values, radioCheck);
     };
+
     return (
         <form onSubmit={form.handleSubmit(handleSubmit)}>
             <InputField name="userName" label="Full Name" form={form} fullWidth />

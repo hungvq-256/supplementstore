@@ -18,7 +18,7 @@ const SearchPage = () => {
         }
         typingTimeOutRef.current = setTimeout(() => {
             setInputValue(value);
-        }, 500)
+        }, 400)
     }
 
     const handleUpperCase = (string) => {
@@ -57,7 +57,7 @@ const SearchPage = () => {
                         <div className="productresult__textbox">
                             <h3>{item.title}</h3>
                             <p>Category: {handleUpperCase(item.type)}</p>
-                            <p className='price'>{`$${Number(item.price) % 1 !== 0 ? item.price : `${item.price}.00`}`}</p>
+                            <p className='price'>{`$${Number(item.price) % 1 !== 0 ? (item.price).toFixed(2) : `${item.price}.00`}`}</p>
                         </div>
                     </Link>
                 ))}

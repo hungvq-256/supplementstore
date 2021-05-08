@@ -26,6 +26,7 @@ header {
             .logo {
                 height: 100%;
                 margin-right: 20px;
+                cursor: pointer;
                 @media (max-width: 991px) {
                     width: 170px;
                 }
@@ -35,13 +36,12 @@ header {
                 @media (max-width: 320px) {
                     width: 110px;
                 }
-                a {
-                    display: block;
+                i {
                     height: 100%;
-                    i {
-                        height: 100%;
-                        display: flex;
-                        align-items: center;
+                    display: flex;
+                    align-items: center;
+                    img {
+                        width: 100%;
                     }
                 }
             }

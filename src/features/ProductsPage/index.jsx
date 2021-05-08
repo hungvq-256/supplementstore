@@ -29,6 +29,7 @@ const ProductsPage = () => {
             ltePrice: params.ltePrice || 150
         }
     }, [location.search]);
+
     const [initialQuery] = useState(queryParsed);
     const productPerPage = 8;
     const productsRef = useRef();

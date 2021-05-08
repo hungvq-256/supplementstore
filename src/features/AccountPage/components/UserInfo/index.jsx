@@ -95,6 +95,7 @@ function UserInfo({ enqueueSnackbar }) {
             })();
         }
     }
+
     useEffect(() => {
         (async () => {
             try {
@@ -121,16 +122,19 @@ function UserInfo({ enqueueSnackbar }) {
         <div className='userinfowrapper'>
             { loading.content ? <CircularProgress className="loadingpurchasehistory" size={50} style={{ color: "#cccccc" }} /> :
                 <div className="userinfo">
-                    <div className="userinfo__avatar">
-                        {user.photoUrl
-                            ?
-                            <div className="userinfo__avatar-img" onClick={handleTogglePopup}>
-                                <img src={user.photoUrl} alt="avatar" />
-                            </div>
-                            :
-                            <div className="userinfo__avatar-text">
-                                <p>{user.userName.charAt(0).toUpperCase()}</p>
-                            </div>
+                    <div
+                        className="userinfo__avatar"
+                    >
+                        {
+                            user.photoUrl
+                                ?
+                                <div className="userinfo__avatar-img" onClick={handleTogglePopup}>
+                                    <img src={user.photoUrl} alt="avatar" />
+                                </div>
+                                :
+                                <div className="userinfo__avatar-text">
+                                    <p>{user.userName.charAt(0).toUpperCase()}</p>
+                                </div>
                         }
                         <UploadAvatar onChangeAvatar={handleChangeAvatar} />
                         <div

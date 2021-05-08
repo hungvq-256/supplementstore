@@ -91,8 +91,8 @@ function ProductItem(props) {
     const products = listProduct.map((item) => (
         <div className={`col-${column} col-xxs col-sm-4 col-lg-3`} key={item.id}>
             <div className="productitem">
-                <div onClick={() => { handleGoToProductDetailPage(item.type, item.id) }}>
-                    <div className="productitem__img" style={{ backgroundImage: `url(${item.img})` }}></div>
+                <div className="productitem__img" onClick={() => { handleGoToProductDetailPage(item.type, item.id) }}>
+                    <div style={{ backgroundImage: `url(${item.img})` }}></div>
                 </div>
                 <div className="productitem__textbox">
                     <div onClick={() => { handleGoToProductDetailPage(item.type, item.id) }}>
@@ -110,7 +110,7 @@ function ProductItem(props) {
                     </div>
                 </div>
                 {(newTag || item.isSale) &&
-                    <div className="newtag">
+                    <div className="producttag">
                         {item.isSale ? `-${item.salePercent}%` : "NEW"}
                     </div>
                 }

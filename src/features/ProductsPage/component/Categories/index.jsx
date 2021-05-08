@@ -114,7 +114,7 @@ const ProductCategories = (props) => {
                     </li>
                 ))}
             </ul>
-            <FormControl style={{ width: '100%', marginBottom: '5px', fontSize: '1em', fontFamily: "Poppins" }} >
+            <FormControl style={{ width: '100%', marginBottom: '5px', fontSize: '1em', fontFamily: "Poppins" }} className="sortbyprice" >
                 <NativeSelect
                     value={filter.sort}
                     name="sort by price"

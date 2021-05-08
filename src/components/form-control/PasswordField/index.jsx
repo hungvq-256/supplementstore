@@ -1,4 +1,4 @@
-import { FormHelperText, Input, makeStyles } from '@material-ui/core';
+import { FormHelperText, Input } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -9,22 +9,18 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 
-
-
 PasswordField.propTypes = {
     form: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     label: PropTypes.string,
     disabled: PropTypes.bool,
+    passwordId: PropTypes.string
 };
-const useStyles = makeStyles((theme) => ({
-    helperText: {
-        color: "#f44336"
-    }
-}))
+PasswordField.defaultProps = {
+    passwordId: '1'
+}
 function PasswordField(props) {
-    const classes = useStyles();
-    const { form, name, label, disabled } = props;
+    const { form, name, label, disabled, passwordId } = props;
     const { errors } = form;
     const hasError = !!errors[name];
     const [showPassword, setShowPassword] = useState(false);
@@ -33,12 +29,18 @@ function PasswordField(props) {
     };
     return (
         <FormControl margin="normal" fullWidth errors={hasError.toString()}>
-            <InputLabel htmlFor="standard-adornment-password" className={hasError ? classes.helperText : ''}>{label}</InputLabel>
+            <InputLabel
+                htmlFor={`standard-adornment-password-${passwordId}`}
+                error={hasError}
+            >
+                {label}
+            </InputLabel>
+
             <Controller
                 name={name}
                 control={form.control}
                 as={Input}
-                id="standard-adornment-password"
+                id={`standard-adornment-password-${passwordId}`}
                 type={showPassword ? 'text' : 'password'}
                 endAdornment={
                     <InputAdornment position="end">
@@ -51,8 +53,9 @@ function PasswordField(props) {
                     </InputAdornment>
                 }
                 disabled={disabled}
+                error={hasError}
             />
-            <FormHelperText className={classes.helperText}>{errors[name]?.message}</FormHelperText>
+            <FormHelperText error={hasError}>{errors[name]?.message}</FormHelperText>
         </FormControl>
     );
 }

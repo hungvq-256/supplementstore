@@ -11,7 +11,7 @@ const UploadAvatar = ({ onChangeAvatar }) => {
     const handleOnChange = (e) => {
         var storage = firebase.storage();
         var storageRef = storage.ref();
-        let file = e.target.files[0]
+        let file = e.target.files[0];
         var metadata = {
             contentType: 'image/jpeg'
         };
@@ -46,17 +46,17 @@ const UploadAvatar = ({ onChangeAvatar }) => {
                 switch (error.code) {
                     case 'storage/unauthorized': {
                         // User doesn't have permission to access the object
-                        console.log(error.code)
+                        console.error(error.code)
                         break;
                     }
                     case 'storage/canceled': {
                         // User canceled the upload
-                        console.log(error.code);
+                        console.error(error.code);
                         break;
                     }
                     case 'storage/unknown': {
                         // Unknown error occurred, inspect error.serverResponse
-                        console.log(error.code);
+                        console.error(error.code);
                         break;
                     }
                     default: {

@@ -120,7 +120,8 @@ const CheckoutPage = () => {
 
     const firstUpperLetter = (string) => {
         let convertToArray = string.toLowerCase().split(' ');
-        let upperFirstLetter = convertToArray.map(item => `${item.charAt(0).toUpperCase()}${item.slice(1)}`);
+        // let upperFirstLetter = convertToArray.map(item => `${item.charAt(0).toUpperCase()}${item.slice(1)}`);
+        let upperFirstLetter = convertToArray.map(item => item.replace(item.charAt(0), item.charAt(0).toUpperCase()));
         return upperFirstLetter.join(' ');
     }
     return (

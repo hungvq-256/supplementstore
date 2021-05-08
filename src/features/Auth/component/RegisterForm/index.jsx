@@ -69,8 +69,8 @@ const RegisterForm = (props) => {
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <InputField name="fullName" label="Full Name" form={form} fullWidth />
                 <InputField name="email" label="Email" form={form} fullWidth />
-                <PasswordField name="password" label="Password" form={form} />
-                <PasswordField name="retypePassword" label="Retype Password" form={form} />
+                <PasswordField name="password" label="Password" form={form} passwordId="1" />
+                <PasswordField name="retypePassword" label="Retype Password" form={form} passwordId="2" />
                 <Button type="submit" className={classes.submit} variant="contained" color="primary" fullWidth mt={2}>
                     {onLoading ? <CircularProgress size={25} style={{ color: "#ffffff" }} /> : "Create an new account"}
                 </Button>

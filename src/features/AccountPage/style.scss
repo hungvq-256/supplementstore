@@ -1,12 +1,13 @@
 .container.--accountpage {
     margin-top: calc(var(--hdheight) + 30px);
-    // height: calc(100vh - var(--hdheight));
+    height: calc(100vh - var(--hdheight));
 }
 .usercontent {
     padding: 15px;
     background: #ffffff;
     border-radius: 6px;
     min-height: 480px;
+    max-height: 480px;
     overflow: auto;
     position: relative;
     @media (max-width: 767px) {
